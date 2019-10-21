@@ -1,0 +1,25 @@
+body{
+    background-color: #EEE;
+    padding-top: 5%;
+}
+
+#divCadastro{
+    display: none;
+    padding: 5%;
+    width: 35em;
+    margin: auto;
+}
+
+#divLogin{
+    padding: 5%;
+    width: 35em;
+    margin: auto;
+}
+.alert.alert-success{
+    display: none;
+    position: relative;
+}
+.alert.alert-danger{
+    display: none;
+    position: relative;
+}

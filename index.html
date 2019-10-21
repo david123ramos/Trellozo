@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Testes</title>
+    <link rel="stylesheet" href="static/bootstrap.css">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+    <div class="container">        
+        <div id="divSuccess" class="alert alert-success" role="alert">Cadastro realizado</div>
+        <div id="divWrong" class="alert alert-danger" role="alert">
+            <button class="close" data-dismiss="alert">x</button>
+            <h6>Usuário já existe. Tente novamente</h6>
+        </div>
+        <div id="divLogin" class="border border-dark">
+            <div class="row">
+                <div class="mx-auto">
+                    <h1>Fazer login no Trellozo</h1>
+                    <a onclick=" return swapDiv(0)" href="#">Fazer cadastro</a>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <form id="login">
+                    <div class="input-group mb-3 ">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">@</span>
+                        </div>
+                        <input required type="text" class="form-control" placeholder="Login">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">*</span>
+                        </div>
+                        <input required type="password" class="form-control" placeholder="Senha">
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Login">
+                </form>
+            </div>
+        </div>    
+        <div id="divCadastro" class="border border-dark">
+            <div class="row">
+                <div class="mx-auto">
+                    <h1>Fazer cadastro no Trellozo</h1>
+                    <a onclick=" return swapDiv(1)" href="#">Fazer login</a>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <form id="cadastrar">
+                    <div class="input-group mb-3 ">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"></span>
+                        </div>
+                        <input required id="name" type="text" class="form-control" placeholder="Nome">
+                    </div>
+                    <div class="input-group mb-3 ">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">@</span>
+                        </div>
+                        <input required id="username" type="text" class="form-control" placeholder="Login">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">*</span>
+                        </div>
+                        <input required id="password" type="password" class="form-control" placeholder="Senha">
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Cadastrar">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="src/script.js"></script>
+</body>
+</html>
