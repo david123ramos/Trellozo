@@ -3,17 +3,20 @@ body{
     padding-top: 5%;
 }
 
-#divCadastro{
+#divRegister{
     display: none;
     padding: 5%;
     width: 35em;
     margin: auto;
+    border-radius: 5px;
+    border-style: hidden;
 }
 
 #divLogin{
     padding: 5%;
     width: 35em;
     margin: auto;
+    border-radius: 5px;
 }
 .alert.alert-success{
     display: none;

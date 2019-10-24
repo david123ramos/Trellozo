@@ -1,7 +1,19 @@
+//divs que precisam ser manipuladas em algum momento
 var divSuccess = document.getElementById("divSuccess");
 var divWrong = document.getElementById("divWrong");
+var divFailLogin =  document.getElementById("divWrongLogin");
 var divL = document.getElementById("divLogin");
-var divC = document.getElementById("divCadastro");  
+var divC = document.getElementById("divRegister"); 
+
+//botoes, forms
+var keepConnected = document.getElementById("keepConnected");
+var formLogin = document.getElementById("login");
+var formCadastrar = document.getElementById("cadastrar");
+
+
+if(localStorage.getItem("token")){
+    formLogin.submit();
+}
 
 /*Escuta evento do click para mudar a vizualização da das divs de cadastro/login*/
 function swapDiv(div){
@@ -16,7 +28,6 @@ function swapDiv(div){
 }
 
 /*Aqui defininimos o eventListner que escutará os submits do form de cadastro */
-var formCadastrar = document.getElementById("cadastrar");
 formCadastrar.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -26,7 +37,7 @@ formCadastrar.addEventListener("submit", function (e) {
         "password": document.getElementById("password").value
     }
 
-    var url = "http://tads-trello.herokuapp.com/api/trello/users/new";
+    var url = "https://tads-trello.herokuapp.com/api/trello/users/new";
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -51,13 +62,12 @@ formCadastrar.addEventListener("submit", function (e) {
 
 
 /*Aqui defininimos o eventListner que escutará os submits do form de Login*/
-var formLogin = document.getElementById("login");
 formLogin.addEventListener("submit", function (e) {
     e.preventDefault();
 
     let dados = {
-        "username": document.getElementById("username").value,
-        "password": document.getElementById("password").value
+        "username": document.getElementById("nameLogin").value,
+        "password": document.getElementById("passwordLogin").value
     }
 
     var url = "https://tads-trello.herokuapp.com/api/trello/login";
@@ -65,9 +75,19 @@ formLogin.addEventListener("submit", function (e) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
-            console.log(obj)
-        }else if(this.readyState == 4 && this.status == 400){
+            console.log(obj.token);
+            
+           if (keepConnected.checked){
+               localStorage.setItem("token", JSON.stringify(obj.token));
+            }else{
+                sessionStorage.setItem("token", obj.token);
+            }
+            formLogin.reset();
+            formLogin.submit();
 
+        }else if(this.readyState == 4 && this.status == 400){
+            divFailLogin.style.display = "block";
+            formLogin.reset();
         }
     }
 
@@ -78,3 +98,8 @@ formLogin.addEventListener("submit", function (e) {
     xhttp.send(JSON.stringify(dados));
 
 });
+
+/*Função usada em alerts de sucesso/erro unicamente recebe um objeto e o torna oculto */
+function closeAlert(someAlert){
+    someAlert.style.display = "none";
+}

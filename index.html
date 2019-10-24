@@ -5,75 +5,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Testes</title>
+    <title>Trellozo</title>
     <link rel="stylesheet" href="static/bootstrap.css">
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/index.css">
 </head>
 
 <body>
-    <div class="container">        
-        <div id="divSuccess" class="alert alert-success" role="alert">Cadastro realizado</div>
-        <div id="divWrong" class="alert alert-danger" role="alert">
-            <button class="close" data-dismiss="alert">x</button>
-            <h6>Usuário já existe. Tente novamente</h6>
-        </div>
-        <div id="divLogin" class="border border-dark">
-            <div class="row">
-                <div class="mx-auto">
-                    <h1>Fazer login no Trellozo</h1>
-                    <a onclick=" return swapDiv(0)" href="#">Fazer cadastro</a>
-                </div>
+  
+   
+    <div class="container">
+        <div class="row justify-content-center">    
+          
+            <!--Alertas de erro/sucesso-->
+            <div id="divSuccess" class="alert alert-success col-sm-12 col-md-6 col-lg-6" role="alert">Cadastro realizado</div>
+            
+            <!--ATENCÇÃO: é necessário remover esta gambiarra; o onclick precisa ser ouvido
+                a partir do botão-->
+            <div id="divWrong" onclick="return closeAlert(this)" class="alert alert-danger col-sm-12 col-md-12 col-lg-12" role="alert">
+                <button onclick="" class="close" data-dismiss="alert">x</button>
+                <h6>Usuário já existe. Tente novamente</h6>
             </div>
-            <div class="row justify-content-center">
-                <form id="login">
+            <div id="divWrongLogin" onclick="return closeAlert(this)" class="alert alert-danger col-sm-12 col-md-12 col-lg-12" role="alert">
+                <button onclick="" class="close" data-dismiss="alert">x</button>
+                <h6>Usuário ou senha inválidos</h6>
+            </div>
+
+
+            <!--Area de login-->
+            <div  id="divLogin" class="border border-dark col col-sm-12 col-md-12 col-lg-6">
+                <h1>Fazer login no Trellozo</h1>
+                <a onclick=" return swapDiv(0)" href="#">Fazer cadastro</a>
+                <form id="login" action="main.html">
                     <div class="input-group mb-3 ">
                         <div class="input-group-prepend">
                             <span class="input-group-text">@</span>
                         </div>
-                        <input required type="text" class="form-control" placeholder="Login">
+                        <input id="nameLogin" required type="text" class="form-control" placeholder="Login">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">*</span>
                         </div>
-                        <input required type="password" class="form-control" placeholder="Senha">
+                        <input id="passwordLogin" required type="password" class="form-control" placeholder="Senha">
                     </div>
-                    <input type="submit" class="btn btn-primary" value="Login">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="keepConnected">
+                        <label class="custom-control-label" for="keepConnected">Mantenha-me conectado</label>
+                    </div>
+                    <p></p><input type="submit" class="btn btn-primary" value="Login">
                 </form>
+
             </div>
-        </div>    
-        <div id="divCadastro" class="border border-dark">
-            <div class="row">
-                <div class="mx-auto">
+
+
+            <!--Area de cadastro-->
+                <div id="divRegister" class="border border-dark col col-sm-12 col-md-12 col-lg-7">
+
                     <h1>Fazer cadastro no Trellozo</h1>
                     <a onclick=" return swapDiv(1)" href="#">Fazer login</a>
+
+                    <form id="cadastrar">
+                        <div class="input-group mb-3 ">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"></span>
+                            </div>
+                            <input required id="name" type="text" class="form-control" placeholder="Nome">
+                        </div>
+                        <div class="input-group mb-3 ">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">@</span>
+                            </div>
+                            <input required id="username" type="text" class="form-control" placeholder="Login">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">*</span>
+                            </div>
+                            <input required id="password" type="password" class="form-control" placeholder="Senha">
+                        </div>
+                       <input type="submit" class="btn btn-primary" value="Cadastrar">
+                    </form>
                 </div>
-            </div>
-            <div class="row justify-content-center">
-                <form id="cadastrar">
-                    <div class="input-group mb-3 ">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"></span>
-                        </div>
-                        <input required id="name" type="text" class="form-control" placeholder="Nome">
-                    </div>
-                    <div class="input-group mb-3 ">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">@</span>
-                        </div>
-                        <input required id="username" type="text" class="form-control" placeholder="Login">
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">*</span>
-                        </div>
-                        <input required id="password" type="password" class="form-control" placeholder="Senha">
-                    </div>
-                    <input type="submit" class="btn btn-primary" value="Cadastrar">
-                </form>
-            </div>
+
         </div>
     </div>
     <script src="src/script.js"></script>
 </body>
+
 </html>
