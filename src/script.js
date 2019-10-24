@@ -13,6 +13,8 @@ var formCadastrar = document.getElementById("cadastrar");
 
 if(localStorage.getItem("token")){
     formLogin.submit();
+}else if(sessionStorage.getItem("token")){
+    formLogin.submit();
 }
 
 /*Escuta evento do click para mudar a vizualização da das divs de cadastro/login*/

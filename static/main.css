@@ -12,3 +12,19 @@ h1{
     border-radius: 5px;
     border-color: black;
 }
+#homeImg{
+    width: 2rem;
+    height: 2rem;
+}
+
+#homeIconDiv{
+    border-radius: 5px;
+    border:1px solid white;
+    padding: 3px;
+}
+
+#homeImg:hover{
+    width: 2.1rem;
+    height: 2.1rem;
+    cursor: pointer;
+}
