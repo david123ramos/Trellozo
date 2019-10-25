@@ -13,21 +13,35 @@
 <body>
     <header class="navbar-header">
         <nav class="navbar navbar-dark bg-dark">
-            
-            <div class="" id="homeIconDiv">
-                <img src="img/home.png" id="homeImg" alt="Home">
+            <div class="" id="packageHomeDiv">
+                <div id="homeIconDiv">
+                    <img src="img/home.png" id="homeImg" alt="Home">
+                </div>
             </div>
         </nav>
     </header>
 
     <div class="container">
-        <div class="row justify-content-center">
-            <div id="lorem" class="border border-dark col-sm-12 col-md-6 col-lg-6">
-                <h2>Lorem Ipsum</h2>
-                <p class="text-muted">Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-                   Voluptatibus, sequi molestiae voluptatum soluta veritatis
-                   at laboriosam itaque incidunt culpa deserunt facilis architecto
-                   eveniet delectus perferendis, similique blanditiis aliquid. A, rem!</p>
+        <div class="row ">
+            <div id="newBoard" class=" card  col col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <span class=" row justify-content-center">
+                    <p>Novo quadro</p>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="divRegisterBoard" class="">
+        <div class="row justify-content-center" id="boardGroupRegister">
+            <div class="col col-sm-12 col-md-12 col-lg-12 col-xg-12">
+                <form id="formCreateBoard" action="" method="post" class="form-inline">
+                    <div class="form-group mb-3 ">
+                        <input maxlength="30" required type="text" id="boardName" class="form-control" id="inputPassword" placeholder="Nome do Board">
+                        <label id="corInput"> &nbsp;Cor: &nbsp;</label>
+                        <input required id="colorButton" class="" type="color"></input>
+                    </div>
+                    <input type="submit" value="Criar" class="btn btn-primary" />
+                </form>
             </div>
         </div>
     </div>

@@ -6,11 +6,14 @@ body{
 h1{
     color: white;
 }
-#lorem{
+#newBoard{
     margin-top: 2rem;
     border-width: medium !important;
     border-radius: 5px;
-    border-color: black;
+    padding-top: 10px
+}
+#newBoard:hover{
+    cursor: pointer;
 }
 #homeImg{
     width: 2rem;
@@ -20,11 +23,62 @@ h1{
 #homeIconDiv{
     border-radius: 5px;
     border:1px solid white;
-    padding: 3px;
+    padding: 2px;
 }
 
 #homeImg:hover{
     width: 2.1rem;
     height: 2.1rem;
     cursor: pointer;
+}
+#packageHomeDiv{
+    width: 2.6rem;
+    height: 2.5rem;
+    padding: 2px;
+}
+#divRegisterBoard{
+   position: absolute;
+   top:0;
+   width:100%;
+   height:100%;
+   background-color: black;
+   opacity: .60;
+}
+#boardGroupRegister{
+    border: 1px solid  #EEE;
+    border-radius: 5px;
+    width: 30%;
+    margin: auto;
+    margin-top: 5rem;
+    padding: 2rem;
+}
+#boardName{
+    background-color: transparent;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+#colorButton {
+    -webkit-appearance: none;
+    padding: 0;
+    border: 4px solid white;
+    border-radius: 35px;
+    width: 40px;
+    height: 40px;
+  }
+#colorButton::-webkit-color-swatch {
+    border: none;
+    border-radius: 10px;
+    padding: 0;
+  }
+#colorButton::-webkit-color-swatch-wrapper {
+    border: none;
+    border-radius: 10px;
+    padding: 0;
+  } 
+#corInput{
+    color: white;
+}
+#divColor{
+    padding-left: 10px;
 }
