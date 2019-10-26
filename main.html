@@ -21,31 +21,35 @@
         </nav>
     </header>
 
-    <div class="container">
-        <div class="row ">
-            <div id="newBoard" class=" card  col col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                <span class=" row justify-content-center">
-                    <p>Novo quadro</p>
-                </span>
+<div class="container-fluid" id="mainDiv">
+        
+        <div class="">
+            <div class="col col-xs-3 col-sm-2 col-md-4 col-lg-4 col-xl-4">
+                <div id="newBoard" class=" card ">
+                    <span class=" row justify-content-center">
+                        <p>Novo quadro</p>
+                    </span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="divRegisterBoard" class="">
-        <div class="row justify-content-center" id="boardGroupRegister">
-            <div class="col col-sm-12 col-md-12 col-lg-12 col-xg-12">
-                <form id="formCreateBoard" action="" method="post" class="form-inline">
-                    <div class="form-group mb-3 ">
-                        <input maxlength="30" required type="text" id="boardName" class="form-control" id="inputPassword" placeholder="Nome do Board">
-                        <label id="corInput"> &nbsp;Cor: &nbsp;</label>
-                        <input required id="colorButton" class="" type="color"></input>
-                    </div>
-                    <input type="submit" value="Criar" class="btn btn-primary" />
-                </form>
+        <div id="divRegisterBoard" class="col" >
+            <div class="row justify-content-center">
+                <div id="boardGroupRegister">
+                    <form id="formCreateBoard" action="" method="post" class="form-horizontal">
+                        <div class="form-group mb-3">
+                            <input maxlength="30" required type="text" id="boardName" class="form-control" id="inputPassword" placeholder="Nome do Board">
+                            <div class="form-group mb-3" id="divChoiceColor">
+                                <label id="corInput"> &nbsp;Cor: &nbsp;</label>
+                                <input required id="colorButton" class="" type="color"></input>
+                            </div>
+                        </div>
+                        <input type="submit" value="Criar" class="btn btn-primary" />
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-
+ </div>       
     <script src="src/main.js"></script>
 </body>
 
