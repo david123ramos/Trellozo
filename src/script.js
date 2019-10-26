@@ -81,6 +81,7 @@ formLogin.addEventListener("submit", function (e) {
             
            if (keepConnected.checked){
                localStorage.setItem("token", JSON.stringify(obj.token));
+               sessionStorage.setItem("token", JSON.stringify(obj.token));
             }else{
                 sessionStorage.setItem("token", obj.token);
             }

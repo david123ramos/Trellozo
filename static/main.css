@@ -8,29 +8,30 @@ h1{
 }
 #newBoard{
     margin-top: 2rem;
-    border-width: medium !important;
     border-radius: 5px;
     padding-top: 10px
 }
 #newBoard:hover{
     cursor: pointer;
 }
+#spnNovoBoard{
+    text-align: center;
+}
 #homeImg{
     width: 2rem;
     height: 2rem;
 }
-
 #homeIconDiv{
     border-radius: 5px;
-    border:1px solid white;
+    border:1px solid rgb(189, 176, 176);
     padding: 2px;
+    background-color: #343a40;
 }
-
-#homeImg:hover{
-    width: 2.1rem;
-    height: 2.1rem;
+#homeIconDiv:hover{
+    background-color:#555b61;
     cursor: pointer;
 }
+
 #packageHomeDiv{
     width: 2.6rem;
     height: 2.5rem;
@@ -39,19 +40,18 @@ h1{
 #divRegisterBoard{
    position: absolute;
    top:0;
-   width:100%;
-   height:100%;
+   height: 100%;
    background-color: black;
    opacity: .60;
+   display: none;
  
 }
 #boardGroupRegister{
     border: 1px solid  #EEE;
     border-radius: 5px;
     width: 30%;
-    margin: 0% ;
-    margin-top: 5rem;
-    padding: 2rem;
+    margin: 5rem 2rem 0rem 2rem ;
+    padding: 1rem;
 }
 #boardName{
     background-color: transparent;
@@ -59,6 +59,8 @@ h1{
     color: white;
 }
 
+
+/*Botão de escolher a cor*/
 #colorButton {
     -webkit-appearance: none;
     padding: 0;
@@ -79,14 +81,4 @@ h1{
   } 
 #corInput{
     color: white;
-}
-#divColor{
-    padding-left: 10px;
-}
-
-#mainDiv{
-    padding: 0%;
-}
-#divChoiceColor{
-    padding: 2%;
 }

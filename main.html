@@ -11,9 +11,10 @@
 </head>
 
 <body>
+    <!--menu de navegação-->
     <header class="navbar-header">
         <nav class="navbar navbar-dark bg-dark">
-            <div class="" id="packageHomeDiv">
+            <div  id="packageHomeDiv">
                 <div id="homeIconDiv">
                     <img src="img/home.png" id="homeImg" alt="Home">
                 </div>
@@ -21,27 +22,33 @@
         </nav>
     </header>
 
-<div class="container-fluid" id="mainDiv">
-        
-        <div class="">
-            <div class="col col-xs-3 col-sm-2 col-md-4 col-lg-4 col-xl-4">
-                <div id="newBoard" class=" card ">
-                    <span class=" row justify-content-center">
+<div class="container-fluid p-0" id="mainDiv">
+    <!--botao novo board-->    
+    <!--A ideia é que os boards do usuário fiquem sendo adicionados nessa linha-->
+    <div class="row mw-100 m-0" id="fatherRow">
+            <div class="col col-xs-3 col-sm-3 col-md-3 col-lg-2 col-xl-2 ">
+                <div id="newBoard" class=" card " onclick="return showAlert('divRegisterBoard')">
+                    <span id="spnNovoBoard">
                         <p>Novo quadro</p>
                     </span>
                 </div>
             </div>
         </div>
 
-        <div id="divRegisterBoard" class="col" >
-            <div class="row justify-content-center">
-                <div id="boardGroupRegister">
-                    <form id="formCreateBoard" action="" method="post" class="form-horizontal">
+        <!--Form criar novo board-->
+        <!--TODO: Em vez de usarmos a paleta de cores de HTML, tenho que definir algumas poucas cores-->
+        <div id="divRegisterBoard" class="container-fluid mh-100 m-0 p-0">
+            <div class="row justify-content-center m-0">
+                <div id="boardGroupRegister" class="col col-xs-3 col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
+                    <div class="flex-row-reverse m-2">
+                        <button onclick="return closeAlert('divRegisterBoard')" class="close">x</button>
+                    </div>
+                    <form id="formCreateBoard" method="post">
                         <div class="form-group mb-3">
-                            <input maxlength="30" required type="text" id="boardName" class="form-control" id="inputPassword" placeholder="Nome do Board">
-                            <div class="form-group mb-3" id="divChoiceColor">
-                                <label id="corInput"> &nbsp;Cor: &nbsp;</label>
-                                <input required id="colorButton" class="" type="color"></input>
+                            <input maxlength="30" required type="text" id="boardName" class="form-control" placeholder="Nome do Board">
+                            <div class="form-group mb-3 pl-0 pb-0 pt-3" id="divChoiceColor">
+                                <label id="corInput">Cor: &nbsp;</label>
+                                <input required id="colorButton" type="color">
                             </div>
                         </div>
                         <input type="submit" value="Criar" class="btn btn-primary" />
