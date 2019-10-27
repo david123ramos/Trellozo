@@ -53,7 +53,7 @@ class Board {
         /*Método que inicia um novo objeto do tipo Board */
         //Hierarquia: divPrincipal -> divCard -> Span -> paragrafo -> texto
         let boardF = document.createElement("div");
-        boardF.setAttribute("class", "col col-xs-3 col-sm-3 col-md-3 col-lg-2 col-xl-2 ");
+        boardF.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 ");
         
         let div1 = document.createElement("div");
         div1.setAttribute("class", "card");
