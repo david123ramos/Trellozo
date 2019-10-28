@@ -39,11 +39,19 @@ function getBoards(){
 
 getBoards();
 
+var colorButtons = document.getElementsByClassName("btn-color");
+//adciona um eventListener a cada um dos botões
 //quando o botão muda de cor, o fundo da div também é mudado
-colorButton.onchange = function(){
-    boardGroupRegister.style.backgroundImage = "none";
-    boardGroupRegister.style.backgroundColor = this.value;
+for(var button of  colorButtons){
+    let color =  getComputedStyle(button).getPropertyValue("background-color");
+    
+    button.addEventListener("click", function(){
+        boardGroupRegister.style.backgroundImage ="none";
+        boardGroupRegister.style.backgroundColor = color;
+        colorButton.value = color;
+    })
 }
+
 
 class Board {
     constructor(name, color){
@@ -82,6 +90,7 @@ class Board {
 
 formCreateBoard.addEventListener("submit", function(e){
     e.preventDefault();
+    console.log(colorButton.value)
     var board ={
         "name" : boardName.value,
         "color": colorButton.value,
@@ -97,8 +106,7 @@ formCreateBoard.addEventListener("submit", function(e){
             fatherRow.appendChild(newBoard.init());
             
             //limpa o form
-            formCreateBoard.reset();
-            boardGroupRegister.style.backgroundImage = "url(img/bgboard.jpg)";
+            closeBoardRegister();
             closeAlert(divRegisterBoard);
 
         }else if(this.readyState == 4 && this.status == 400){
@@ -119,11 +127,18 @@ formCreateBoard.addEventListener("submit", function(e){
 //Recebe qualquer elemento e oculta sua vizualização
 //Se o argumento passado for uma string quer dizer que estou passando um id para a função
 function closeAlert(someElement){      
-    if(typeof someElement == 'string'){
+    if(someElement == 'string'){
         document.getElementById(someElement).style.display = "none";
     }else{
         someElement.style.display = "none";
     }
+}
+
+//retoma o estado inicial do form de registrar um novo board
+function closeBoardRegister(){
+    formCreateBoard.reset();
+    boardGroupRegister.style.backgroundImage =  "url(img/bgboard.jpg)";
+    divRegisterBoard.style.display = "none";
 }
 
 function showAlert(someElement){

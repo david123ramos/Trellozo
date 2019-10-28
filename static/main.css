@@ -6,6 +6,9 @@ body{
 h1{
     color: white;
 }
+#nav-header{
+    background-color: #026aa7;
+}
 #newBoard{
     margin-top: 2rem;
     border-radius: 5px;
@@ -23,12 +26,12 @@ h1{
 }
 #homeIconDiv{
     border-radius: 5px;
-    border:2px solid rgb(255, 255, 255);
-    padding: 2px;
-    background-color: #343a40;
+    background-color: #579fc8;
+    padding: 0.3rem;
 }
+
 #homeIconDiv:hover{
-    background-color:#555b61;
+    background-color:#3791c5;
     cursor: pointer;
 }
 
