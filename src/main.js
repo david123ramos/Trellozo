@@ -3,6 +3,7 @@ const token = sessionStorage.getItem("token");
 
 //divs
 var boardGroupRegister = document.getElementById("boardGroupRegister");
+var divRegisterBoard = document.getElementById("divRegisterBoard");
 
 //forms and buttons
 var formCreateBoard =  document.getElementById("formCreateBoard");
@@ -40,6 +41,7 @@ getBoards();
 
 //quando o botão muda de cor, o fundo da div também é mudado
 colorButton.onchange = function(){
+    boardGroupRegister.style.backgroundImage = "none";
     boardGroupRegister.style.backgroundColor = this.value;
 }
 
@@ -96,7 +98,8 @@ formCreateBoard.addEventListener("submit", function(e){
             
             //limpa o form
             formCreateBoard.reset();
-            boardGroupRegister.style.backgroundColor = "black";
+            boardGroupRegister.style.backgroundImage = "url(img/bgboard.jpg)";
+            closeAlert(divRegisterBoard);
 
         }else if(this.readyState == 4 && this.status == 400){
 

@@ -14,10 +14,8 @@
     <!--menu de navegação-->
     <header class="navbar-header">
         <nav class="navbar navbar-dark bg-dark">
-            <div  id="packageHomeDiv">
-                <div id="homeIconDiv">
-                    <img src="img/home.png" id="homeImg" alt="Home">
-                </div>
+            <div id="homeIconDiv">
+                <img src="img/home.png" id="homeImg" alt="Home">
             </div>
         </nav>
     </header>
@@ -39,16 +37,16 @@
         <!--TODO: Em vez de usarmos a paleta de cores de HTML, tenho que definir algumas poucas cores-->
         <div id="divRegisterBoard" class="container-fluid mh-100 m-0 p-0">
             <div class="row justify-content-center m-0">
-                <div id="boardGroupRegister" class="col col-xs-3 col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
+                <div id="boardGroupRegister" class="col-11 col-sm-9 col-md-9 col-lg-9 col-xl-6">
                     <div class="flex-row-reverse m-2">
                         <button onclick="return closeAlert('divRegisterBoard')" class="close">x</button>
                     </div>
                     <form id="formCreateBoard" method="post">
                         <div class="form-group mb-3">
-                            <input maxlength="30" required type="text" id="boardName" class="form-control" placeholder="Nome do Board">
+                            <input maxlength="30" required type="text" id="boardName" class="form-control " placeholder="Nome do Board">
                             <div class="form-group mb-3 pl-0 pb-0 pt-3" id="divChoiceColor">
-                                <label id="corInput">Cor: &nbsp;</label>
-                                <input required id="colorButton" type="color">
+                                <label class="text-light">Cor: &nbsp;</label>
+                                <input id="colorButton" type="color">
                             </div>
                         </div>
                         <input type="submit" value="Criar" class="btn btn-primary" />
