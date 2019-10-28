@@ -45,17 +45,12 @@ h1{
     border-radius: 5px;
     width: 30%;
     background-image: url(../img/bgboard.jpg);
-    color: black;
     margin: 5rem 2rem 0rem 2rem ;
     padding: 1rem;
-}
-::-webkit-input-placeholder{
-    color: white;
 }
 #boardName{
     background-color: transparent;
     font-family: Arial, Helvetica, sans-serif;
-    color: white;
 }
 
 

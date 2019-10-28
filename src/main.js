@@ -58,7 +58,7 @@ class Board {
         boardF.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 ");
         
         let div1 = document.createElement("div");
-        div1.setAttribute("class", "card");
+        div1.setAttribute("class", "card border-light");
         div1.setAttribute("id", "newBoard");
         div1.style.backgroundColor = this.color;
         //TODO: o onclick desses boards deve abrir as listas do trello
