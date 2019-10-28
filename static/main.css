@@ -37,15 +37,14 @@ h1{
    top:0;
    height: 100%;
    background-color: black;
-   opacity: .80;
+   background-color: rgba(0,0,0,.9);
    display: none;
 }
 #boardGroupRegister{
-    border: 2px solid  black;
+    border: 2px solid  rgba(0,0,0,.9);
     border-radius: 5px;
     width: 30%;
     background-image: url(../img/bgboard.jpg);
-    
     color: black;
     margin: 5rem 2rem 0rem 2rem ;
     padding: 1rem;
