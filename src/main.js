@@ -62,11 +62,11 @@ class Board {
     init(){
         /*Método que inicia um novo objeto do tipo Board */
         //Hierarquia: divPrincipal -> divCard -> Span -> paragrafo -> texto
-        let boardF = document.createElement("div");
-        boardF.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 ");
-        
+        let listItem = document.createElement("li");
+        listItem.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 ");
+
         let div1 = document.createElement("div");
-        div1.setAttribute("class", "card border-light h-100 mt-4.5");
+        div1.setAttribute("class", "card border-light h-100");
         div1.setAttribute("id", "newBoard");
         div1.style.backgroundColor = this.color;
         //TODO: o onclick desses boards deve abrir as listas do trello
@@ -81,9 +81,9 @@ class Board {
         paragrafo.appendChild(tituloBoard);
         spn.appendChild(paragrafo);
         div1.appendChild(spn);
-        boardF.appendChild(div1);
+        listItem.appendChild(div1);
 
-        return boardF;
+        return listItem;
     }
 }
 

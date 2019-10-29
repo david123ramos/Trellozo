@@ -10,10 +10,9 @@ h1{
     background-color: #026aa7;
 }
 #newBoard{
-    margin-top: 2rem;
+    margin-top: 1rem;
     border-radius: 5px;
-    padding-top: 10px;
-    padding-left: 10px;
+    padding-left: 5px;
     font-weight: bold;
 }
 #newBoard:hover{
@@ -34,7 +33,9 @@ h1{
     background-color:#3791c5;
     cursor: pointer;
 }
-
+ul{
+    list-style-type: none;
+}
 #divRegisterBoard{
    position: absolute;
    top:0;
