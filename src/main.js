@@ -9,16 +9,40 @@ var divRegisterBoard = document.getElementById("divRegisterBoard");
 var formCreateBoard =  document.getElementById("formCreateBoard");
 var colorButton = document.getElementById("colorButton");
 var boardName =  document.getElementById("boardName");
+var acountButton = document.getElementsByClassName("spnRoundedButton").item(0);
 
 //html objects
-var fatherRow =  document.getElementById("fatherRow")
-
+var fatherRow =  document.getElementById("fatherRow");
+var firstChild = document.getElementById("firstChild");
 
 //Funcao que recebe os  boards na entrada do sistema e os coloca na tela
 function printBoards(element){
     let board = new Board(element.name, element.color).init();
-    fatherRow.appendChild(board);
+    fatherRow.insertBefore(board, firstChild);
 }
+
+getUserName();
+getBoards();
+
+
+//usada para mudar a letra que aparece no botão de perfil nas páginas
+function getUserName(){
+    var url = "https://tads-trello.herokuapp.com/api/trello/users/"+token;
+    console.log(url);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var obj = JSON.parse(this.responseText);
+            console.log(obj.name);
+            acountButton.innerHTML = obj.name.charAt(0);
+            
+        }
+    }
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(url);
+}
+
 
 function getBoards(){
     var url = "https://tads-trello.herokuapp.com/api/trello/boards/"+token;
@@ -37,10 +61,9 @@ function getBoards(){
     xhttp.send(url);
 }
 
-getBoards();
 
 var colorButtons = document.getElementsByClassName("btn-color");
-//adciona um eventListener a cada um dos botões
+//adciona um eventListener a cada um dos botões de cor
 //quando o botão muda de cor, o fundo da div também é mudado
 for(var button of  colorButtons){
     let color =  getComputedStyle(button).getPropertyValue("background-color");
@@ -61,14 +84,14 @@ class Board {
     }
     init(){
         /*Método que inicia um novo objeto do tipo Board */
-        //Hierarquia: divPrincipal -> divCard -> Span -> paragrafo -> texto
+        //Hierarquia: li-> divCard -> Span -> paragrafo -> texto
         let listItem = document.createElement("li");
         listItem.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 ");
 
-        let div1 = document.createElement("div");
-        div1.setAttribute("class", "card border-light h-100");
-        div1.setAttribute("id", "newBoard");
-        div1.style.backgroundColor = this.color;
+        let divCard = document.createElement("div");
+        divCard.setAttribute("class", "card border-light h-100");
+        divCard.setAttribute("id", "newBoard");
+        divCard.style.backgroundColor = this.color;
         //TODO: o onclick desses boards deve abrir as listas do trello
 
         let spn = document.createElement("span");
@@ -80,8 +103,8 @@ class Board {
 
         paragrafo.appendChild(tituloBoard);
         spn.appendChild(paragrafo);
-        div1.appendChild(spn);
-        listItem.appendChild(div1);
+        divCard.appendChild(spn);
+        listItem.appendChild(divCard);
 
         return listItem;
     }
@@ -103,7 +126,7 @@ formCreateBoard.addEventListener("submit", function(e){
             var obj = JSON.parse(this.responseText);
             console.log(obj);
             let newBoard = new Board(obj.name, obj.color);
-            fatherRow.appendChild(newBoard.init());
+            fatherRow.insertBefore(newBoard.init(), firstChild);
             
             //limpa o form
             closeBoardRegister();

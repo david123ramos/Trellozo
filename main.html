@@ -13,37 +13,38 @@
 
 <body>
     <!--menu de navegação-->
-    <div class="container mw-100 p-0 ">
-        <header id="nav-header" class="navbar-header">
-            <div class="row mw-100">
-                <div class="col-4">
-                    <nav class="navbar">
-                        <div id="homeIconDiv">
-                            <img src="img/home.png" id="homeImg" alt="Home">
-                        </div>
-                    </nav>
+    <nav class="navbar navbar-default navbar-static-top pb-1 pt-1" id="nav-header">
+            <div class="row mw-100 ">
+                <div class="col-4"> 
+                    <div id="homeIconDiv" class="navbar-brand">
+                        <img src="img/home.png" id="homeImg" alt="Home">
+                    </div>
                 </div>
-
+            </div>  
+            
+            <div class="row mw-100 ">
                 <div class="col-4 d-none d-sm-block">
                     <div class="row justify-content-center">
                         <h1 class="display-6">Trellozo</h1>
                     </div>
                 </div>
-
+            </div>
+            <div class="row mw-100 ">
                 <div class="col-4">
-                    <div class="d-flex flex-row-reverse ">
-
+                        <div class=" navbar-brand">
+                        <button class=" btn-circle p-0">
+                            <span class="spnRoundedButton"></span>
+                        </button>
                     </div>
                 </div>
             </div>
-        </header>
-    </div>
+        </nav>
 
+    <!--Linha principal da tela inicial. Aqui ficam todos os boards do usuario oganizados
+        em uma lista-->
     <div class="container-fluid p-0 mh-100" id="mainDiv">
-        <!--botao novo board-->
-        <!--A ideia é que os boards do usuário fiquem sendo adicionados nessa linha-->
         <ul class="row list-group list-group-horizontal px-3 w-100 m-0" id="fatherRow">
-            <li class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3">
+            <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3">
                 <div id="newBoard" class="card border-light h-100" onclick="return showAlert('divRegisterBoard')">
                     <span id="spnNovoBoard">
                         <p>Novo quadro</p>
@@ -54,8 +55,6 @@
     </div>
 
     <!--Form criar novo board-->
-    <!--TODO: Em vez de usarmos a paleta de cores de HTML, tenho que definir algumas poucas cores
-            TODO: Botão de fechar precisa resetar o form-->
     <div id="divRegisterBoard" class="h-100 w-100 m-0 p-0">
         <div class="row justify-content-center m-0">
             <div id="boardGroupRegister" class="col-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
