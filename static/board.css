@@ -27,6 +27,7 @@ ul{
     border-radius: 5px;
     padding-left: 5px;
     font-weight: bold;
+    width: 260px !important;
 }
 #newBoard:hover{
     cursor: pointer;
