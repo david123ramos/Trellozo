@@ -15,11 +15,7 @@ var acountButton = document.getElementsByClassName("spnRoundedButton").item(0);
 var fatherRow =  document.getElementById("fatherRow");
 var firstChild = document.getElementById("firstChild");
 
-//Funcao que recebe os  boards na entrada do sistema e os coloca na tela
-function printBoards(element){
-    let board = new Board(element.name, element.color).init();
-    fatherRow.insertBefore(board, firstChild);
-}
+
 
 getUserName();
 getBoards();
@@ -43,6 +39,12 @@ function getUserName(){
     xhttp.send(url);
 }
 
+//usada no forEach. Instancia o board e o imprime na tela 
+function printBoards(element){
+    let board = new Board(element.name, element.color).init();
+    fatherRow.insertBefore(board, firstChild);
+}
+
 
 function getBoards(){
     var url = "https://tads-trello.herokuapp.com/api/trello/boards/"+token;
@@ -62,9 +64,9 @@ function getBoards(){
 }
 
 
-var colorButtons = document.getElementsByClassName("btn-color");
 //adciona um eventListener a cada um dos botões de cor
 //quando o botão muda de cor, o fundo da div também é mudado
+var colorButtons = document.getElementsByClassName("btn-color");
 for(var button of  colorButtons){
     let color =  getComputedStyle(button).getPropertyValue("background-color");
     
@@ -75,7 +77,7 @@ for(var button of  colorButtons){
     })
 }
 
-
+/*Classe que representa cada objeto board */
 class Board {
     constructor(name, color){
         this.name = name;
@@ -92,7 +94,6 @@ class Board {
         divCard.setAttribute("class", "card border-light h-100");
         divCard.setAttribute("id", "newBoard");
         divCard.style.backgroundColor = this.color;
-        //TODO: o onclick desses boards deve abrir as listas do trello
 
         let spn = document.createElement("span");
         spn.setAttribute("id", "spnNovoBoard");

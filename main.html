@@ -57,7 +57,7 @@
     <!--Form criar novo board-->
     <div id="divRegisterBoard" class="h-100 w-100 m-0 p-0">
         <div class="row justify-content-center m-0">
-            <div id="boardGroupRegister" class="col-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <div id="boardGroupRegister" class="col-11 col-sm-6 col-md-6 col-lg-5 col-xl-5">
                 <div class="flex-row-reverse m-2">
                     <button onclick="return closeBoardRegister()" class="close">x</button>
                 </div>
@@ -71,17 +71,27 @@
                 </form>
             </div>
             <!--Aqui ficam as seis opções de cores para o board do usuário-->
-            <div class="mt-auto mb-5  d-sm-block d-flex" id="divChoiceColor">
-                <div class="row m-1">
-                    <input id="1" class="btn bg-danger m-1 btn-color" type="button" value="">
-                    <input id="2" class="btn bg-warning m-1 btn-color" type="button" value="">
-                    <input id="3" class="btn bg-info m-1 btn-color" type="button" value="">
-                </div>
-                <div class="row m-1">
-                    <input id="4" class="btn bg-primary m-1 btn-color" type="button" value="">
-                    <input id="5" class="btn bg-light m-1 btn-color" type="button" value="">
-                    <input id="6" class="btn bg-success m-1 btn-color" type="button" value="">
-                </div>
+                
+                <table class="mt-auto mb-4  d-sm-inline d-flex">
+                    <tr class="h-1">
+                        <td><input id="1" class="btn bg-danger m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="2" class="btn bg-warning m-1 btn-color" type="button" value=""></td>
+                        <td><input id="3" class="btn bg-info m-1 btn-color" type="button" value=""></td>
+                    </tr>
+                    <tr>
+                        <td><input id="4" class="btn bg-primary m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="5" class="btn bg-light m-1 btn-color" type="button" value=""></td>
+                        <td><input id="6" class="btn bg-success m-1 btn-color" type="button" value=""></td>
+                    </tr>
+                    <tr>
+                        <td><input id="1" class="btn bg-danger m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="2" class="btn bg-warning m-1 btn-color" type="button" value=""></td>
+                        <td><input id="3" class="btn bg-info m-1 btn-color" type="button" value=""></td>
+
+                    </tr>
+                </table>
+
+
             </div>
         </div>
     </div>
