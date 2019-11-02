@@ -9,34 +9,23 @@
     <link rel="stylesheet" href="static/main.css">
     <link rel="shortcut icon" href="img/onion.ico" type="image/x-icon">
     <title>Trellozo</title>
-</head>
-
-<body>
-    <!--menu de navegação-->
-    <nav class="navbar navbar-default navbar-static-top pb-1 pt-1" id="nav-header">
-            <div class="row mw-100 ">
-                <div class="col-4"> 
-                    <div id="homeIconDiv" class="navbar-brand">
-                        <img src="img/home.png" id="homeImg" alt="Home">
-                    </div>
-                </div>
-            </div>  
-            
-            <div class="row mw-100 ">
-                <div class="col-4 d-none d-sm-block">
-                    <div class="row justify-content-center">
-                        <h1 class="display-6">Trellozo</h1>
-                    </div>
+    </head>
+    
+    <body>
+        <!--menu de navegação-->
+        <nav class="navbar navbar-default navbar-static-top pb-1 pt-1" id="nav-header">
+            <div lass="nav-item">
+                <div id="homeIconDiv" class="navbar-brand">
+                    <img src="img/home.png" id="homeImg" alt="Home">
                 </div>
             </div>
-            <div class="row mw-100 ">
-                <div class="col-4">
-                        <div class=" navbar-brand">
-                        <button class=" btn-circle p-0">
-                            <span class="spnRoundedButton"></span>
-                        </button>
-                    </div>
-                </div>
+            <div lass="nav-item">
+                <h1 class="display-6">Trellozo</h1>
+            </div>
+            <div lass="nav-item">
+                <button class=" btn-circle p-0">
+                    <span class="spnRoundedButton"></span>
+                </button>
             </div>
         </nav>
 
@@ -70,23 +59,23 @@
                     <input type="hidden" id="colorButton">
                 </form>
             </div>
-            <!--Aqui ficam as seis opções de cores para o board do usuário-->
-                
+            
+            <!--Aqui ficam as nove opções de cores para o board do usuário-->
                 <table class="mt-auto mb-4  d-sm-inline d-flex">
                     <tr class="h-1">
-                        <td><input id="1" class="btn bg-danger m-1 btn-color" type="button" value=""> </td>
-                        <td><input id="2" class="btn bg-warning m-1 btn-color" type="button" value=""></td>
-                        <td><input id="3" class="btn bg-info m-1 btn-color" type="button" value=""></td>
+                        <td><input id="1" style="background-color: #01BAEF"  class="btn m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="2" style="background-color: #191516" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="3" style="background-color: #AB2346" class="btn m-1 btn-color" type="button" value=""></td>
                     </tr>
                     <tr>
-                        <td><input id="4" class="btn bg-primary m-1 btn-color" type="button" value=""> </td>
-                        <td><input id="5" class="btn bg-light m-1 btn-color" type="button" value=""></td>
-                        <td><input id="6" class="btn bg-success m-1 btn-color" type="button" value=""></td>
+                        <td><input id="4" style="background-color: #D55672" class="btn  m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="5" style="background-color: #F1D302" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="6" style="background-color: #235789" class="btn m-1 btn-color" type="button" value=""></td>
                     </tr>
                     <tr>
-                        <td><input id="1" class="btn bg-danger m-1 btn-color" type="button" value=""> </td>
-                        <td><input id="2" class="btn bg-warning m-1 btn-color" type="button" value=""></td>
-                        <td><input id="3" class="btn bg-info m-1 btn-color" type="button" value=""></td>
+                        <td><input id="1" style="background-color: #AB2346" class="btn  m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="2" style="background-color: #AB2346" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="3" style="background-color: #AB2346" class="btn m-1 btn-color" type="button" value=""></td>
 
                     </tr>
                 </table>
