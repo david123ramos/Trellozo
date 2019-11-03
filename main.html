@@ -44,16 +44,16 @@
     </div>
 
     <!--Form criar novo board-->
-    <div id="divRegisterBoard" class="h-100 w-100 m-0 p-0">
-        <div class="row justify-content-center m-0">
-            <div id="boardGroupRegister" class="col-11 col-sm-6 col-md-6 col-lg-5 col-xl-5">
+    <div id="divRegisterBoard" class="h-100 w-100 m-0 p-0" onclick="closeAlert(this); closeBoardRegister();" >
+        <div class="row justify-content-center m-0" onclick="event.stopPropagation()">
+            <div id="boardGroupRegister" class="col-11 col-sm-6 col-md-6 col-lg-5 col-xl-5" >
                 <div class="flex-row-reverse m-2">
                     <button onclick="return closeBoardRegister()" class="close">x</button>
                 </div>
                 <form id="formCreateBoard" method="post">
                     <div class="form-group mb-3">
                         <input maxlength="30" required type="text" id="boardName" class="form-control "
-                            placeholder="Nome do Board">
+                            placeholder="Nome do Board" autofocus> 
                     </div>
                     <input type="submit" value="Criar" class="btn btn-primary" />
                     <input type="hidden" id="colorButton">
@@ -64,23 +64,21 @@
                 <table class="mt-auto mb-4  d-sm-inline d-flex">
                     <tr class="h-1">
                         <td><input id="1" style="background-color: #01BAEF"  class="btn m-1 btn-color" type="button" value=""> </td>
-                        <td><input id="2" style="background-color: #191516" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="2" style="background-color: #494ca2" class="btn m-1 btn-color" type="button" value=""></td>
                         <td><input id="3" style="background-color: #AB2346" class="btn m-1 btn-color" type="button" value=""></td>
                     </tr>
                     <tr>
-                        <td><input id="4" style="background-color: #D55672" class="btn  m-1 btn-color" type="button" value=""> </td>
-                        <td><input id="5" style="background-color: #F1D302" class="btn m-1 btn-color" type="button" value=""></td>
-                        <td><input id="6" style="background-color: #235789" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="4" style="background-color: #52de97" class="btn  m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="5" style="background-color: #ffd739" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="6" style="background-color: #a64942" class="btn m-1 btn-color" type="button" value=""></td>
                     </tr>
                     <tr>
-                        <td><input id="1" style="background-color: #AB2346" class="btn  m-1 btn-color" type="button" value=""> </td>
-                        <td><input id="2" style="background-color: #AB2346" class="btn m-1 btn-color" type="button" value=""></td>
-                        <td><input id="3" style="background-color: #AB2346" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="1" style="background-color: #f45905" class="btn  m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="2" style="background-color: #f54291" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="3" style="background-color: #5f6769" class="btn m-1 btn-color" type="button" value=""></td>
 
                     </tr>
                 </table>
-
-
             </div>
         </div>
     </div>
