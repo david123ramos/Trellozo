@@ -1,5 +1,8 @@
 //outras variáveis
-const token = "8Go3a5bh1necoWraX1DVhz";
+const boardID = JSON.parse(sessionStorage.getItem("board")).id;
+const boardColor = JSON.parse(sessionStorage.getItem("board")).color;
+const token = sessionStorage.getItem("token");
+
 var firstChild = document.getElementById("firstChild");
 var fatherRow =  document.getElementById("fatherRow");
 
@@ -8,6 +11,11 @@ var formCreateList = document.getElementById("formCreateList");
 var divCreateList =  document.getElementById("formList");
 var spnListTitle = document.getElementById("spnList");
 var listName = document.getElementById("listName");
+
+function getBoard(){
+    
+
+}
 
 class List{
     constructor(name, listId){

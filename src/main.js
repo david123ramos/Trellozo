@@ -10,6 +10,9 @@ var formCreateBoard =  document.getElementById("formCreateBoard");
 var colorButton = document.getElementById("colorButton");
 var boardName =  document.getElementById("boardName");
 var acountButton = document.getElementsByClassName("spnRoundedButton").item(0);
+var boardClickedName = document.getElementById("boardID");
+var boardClickedColor = document.getElementById("boardColor");
+var formEnterBoard = document.getElementById("formEnterBoard");
 
 //html objects
 var fatherRow =  document.getElementById("fatherRow");
@@ -67,7 +70,7 @@ function getBoards(){
 //adciona um eventListener a cada um dos botões de cor
 //quando o botão muda de cor, o fundo da div também é mudado
 var colorButtons = document.getElementsByClassName("btn-color");
-for(var button of  colorButtons){
+for(let button of  colorButtons){
     let color =  getComputedStyle(button).getPropertyValue("background-color");
     
     button.addEventListener("click", function(){
@@ -108,7 +111,19 @@ class Board {
         spn.appendChild(paragrafo);
         divCard.appendChild(spn);
         listItem.appendChild(divCard);
-
+        
+        listItem.addEventListener("click", ()=>{
+            
+            let boardInfo = {
+                "id": this.id,
+                "color": this.color,
+            }
+            sessionStorage.setItem("board", JSON.stringify(boardInfo));
+            window.location.href ="board.html";
+            
+        });
+        
+        
         return listItem;
     }
 }
@@ -116,12 +131,13 @@ class Board {
 
 formCreateBoard.addEventListener("submit", function(e){
     e.preventDefault();
-    console.log(colorButton.value)
+    
     var board ={
         "name" : boardName.value,
         "color": colorButton.value,
-        "token": sessionStorage.getItem("token")
+        "token": token
     }
+
     var url = "https://tads-trello.herokuapp.com/api/trello/boards/new";
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -129,6 +145,7 @@ formCreateBoard.addEventListener("submit", function(e){
             var obj = JSON.parse(this.responseText);
             console.log(obj);
             let newBoard = new Board(obj.name, obj.color, obj.id);
+            console.log(newBoard)
             fatherRow.insertBefore(newBoard.init(), firstChild);
             
             //limpa o form
@@ -140,7 +157,6 @@ formCreateBoard.addEventListener("submit", function(e){
         }
     }
 
-    console.log(JSON.stringify(board));
 
     xhttp.open("POST", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
@@ -169,21 +185,4 @@ function closeBoardRegister(){
 
 function showAlert(someElement){
     document.getElementById(someElement).style.display ="block";
-}
-
-//funcção que deve ser executada quando o usuário clicar para entrar em um board
-var boards = document.getElementsByClassName("board");
-var boardClickedName = document.getElementById("boardID");
-var boardClickedColor = document.getElementById("boardColor");
-var formEnterBoard = document.getElementById("formEnterBoard");
-
-for(var board of boards){
-
-    board.addEventListener("click", function(){
-
-        boardClickedName.value =  board.name;
-        boardClickedColor = board.color;
-        formEnterBoard.submit();
-        
-    });
 }
