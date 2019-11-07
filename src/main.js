@@ -41,7 +41,7 @@ function getUserName(){
 
 //usada no forEach. Instancia o board e o imprime na tela 
 function printBoards(element){
-    let board = new Board(element.name, element.color).init();
+    let board = new Board(element.name, element.color, element.id).init();
     fatherRow.insertBefore(board, firstChild);
 }
 
@@ -79,9 +79,10 @@ for(var button of  colorButtons){
 
 /*Classe que representa cada objeto board */
 class Board {
-    constructor(name, color){
+    constructor(name, color, id){
         this.name = name;
         this.color = color;
+        this.id = id;
         
     }
     init(){
@@ -89,9 +90,10 @@ class Board {
         //Hierarquia: li-> divCard -> Span -> paragrafo -> texto
         let listItem = document.createElement("li");
         listItem.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 ");
+        listItem.setAttribute("id", this.id);
 
         let divCard = document.createElement("div");
-        divCard.setAttribute("class", "card border-light h-100");
+        divCard.setAttribute("class", "card border-light h-100 board");
         divCard.setAttribute("id", "newBoard");
         divCard.style.backgroundColor = this.color;
 
@@ -126,7 +128,7 @@ formCreateBoard.addEventListener("submit", function(e){
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
             console.log(obj);
-            let newBoard = new Board(obj.name, obj.color);
+            let newBoard = new Board(obj.name, obj.color, obj.id);
             fatherRow.insertBefore(newBoard.init(), firstChild);
             
             //limpa o form
@@ -161,10 +163,27 @@ function closeAlert(someElement){
 //retoma o estado inicial do form de registrar um novo board
 function closeBoardRegister(){
     formCreateBoard.reset();
-    boardGroupRegister.style.backgroundImage =  "url(img/bgboard.jpg)";
-    divRegisterBoard.style.display = "none";
+    boardGroupRegister.style.backgroundImage =  "url(img/bgboard.jpg)";   
+    closeAlert(divRegisterBoard);
 }
 
 function showAlert(someElement){
     document.getElementById(someElement).style.display ="block";
+}
+
+//funcção que deve ser executada quando o usuário clicar para entrar em um board
+var boards = document.getElementsByClassName("board");
+var boardClickedName = document.getElementById("boardID");
+var boardClickedColor = document.getElementById("boardColor");
+var formEnterBoard = document.getElementById("formEnterBoard");
+
+for(var board of boards){
+
+    board.addEventListener("click", function(){
+
+        boardClickedName.value =  board.name;
+        boardClickedColor = board.color;
+        formEnterBoard.submit();
+        
+    });
 }

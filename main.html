@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="static/main.css">
     <link rel="shortcut icon" href="img/onion.ico" type="image/x-icon">
     <title>Trellozo</title>
-    </head>
+</head>
     
     <body>
         <!--menu de navegação-->
@@ -31,10 +31,11 @@
 
     <!--Linha principal da tela inicial. Aqui ficam todos os boards do usuario oganizados
         em uma lista-->
+        <!--TODO: as divs dos boards criados não podem ter o mesmo id: "newBoard"-->
     <div class="container-fluid mh-100" id="mainDiv">
         <ul class="row list-group list-group-horizontal px-3 w-100 m-0" id="fatherRow">
             <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3">
-                <div id="newBoard" class="card border-light h-100" onclick="return showAlert('divRegisterBoard')">
+                <div id="newBoard" class="card border-light h-100 board" onclick="return showAlert('divRegisterBoard')">
                     <span id="spnNovoBoard">
                         <p>Novo quadro</p>
                     </span>
@@ -80,10 +81,16 @@
                     </tr>
                 </table>
             </div>
+
+            <div hidden>
+                <form action="board.html" id="formEnterBoard">
+                    <input type="text" name="" id="boardID">
+                    <input type="text" name="" id="boardColor">
+                </form>
+            </div>
+
         </div>
-    </div>
-    </div>
-    </div>
+
     <script src="src/main.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

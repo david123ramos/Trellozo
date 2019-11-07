@@ -83,8 +83,11 @@ ul{
     background-color: transparent;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
+    font-weight: bold;
 }
 
 input::-webkit-input-placeholder{
     color: white !important;
+    font-weight: bold;
+
 }
