@@ -12,9 +12,9 @@ var divCreateList =  document.getElementById("formList");
 var spnListTitle = document.getElementById("spnList");
 var listName = document.getElementById("listName");
 
-function getBoard(){
-    
-
+window.onload = function(){
+    document.getElementById("nav-header").style.backgroundColor = boardColor;
+    document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
 }
 
 class List{

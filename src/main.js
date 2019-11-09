@@ -117,6 +117,7 @@ class Board {
             let boardInfo = {
                 "id": this.id,
                 "color": this.color,
+                "name": this.name
             }
             sessionStorage.setItem("board", JSON.stringify(boardInfo));
             window.location.href ="board.html";
