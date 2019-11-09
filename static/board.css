@@ -11,10 +11,18 @@ ul{
 #nav-header{
     background-color: #ffffff2d;
 }
-
+.btn-sup{
+    background-color: rgba(0,0,0,.08);
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 3px;
+    padding: 5px;
+    color: white;
+    font-weight: bold ;
+    border: none;
+}
 #homeIconDiv{
     border-radius: 5px;
-    background-color:rgba(255, 255, 255, 0.192);
+    background-color:rgba(255, 255, 255, 0.5);
     padding: 0.3rem;
 }
 
@@ -26,7 +34,7 @@ ul{
     border-radius: 5px;
     padding: 5px 5px 0px 5px;
     font-weight: bold;
-    width: 260px ;
+    width: 100%;
     background-color: #ebecf0;
     border-color: transparent;
 }
@@ -35,15 +43,19 @@ ul{
 }
 .list{
     border-radius: 5px;
-    padding: 5px 5px 0px 5px;
-    margin: 1rem 0rem 0rem 1rem;
-    font-weight: bold;
+    padding: 5px 5px 5px 5px;
+    /* margin: 1rem 0rem 0rem 1rem; */
     width: 100% !important;
     background-color: #ebecf0;
     border-color: transparent;
 }
 .list:hover {
     cursor: pointer;
+}
+.title{   
+    font-weight: bold;
+    background-color: #ebecf0;
+    border: none;
 }
 
 .btn-circle{

@@ -1,6 +1,7 @@
 //outras variáveis
 const boardID = JSON.parse(sessionStorage.getItem("board")).id;
 const boardColor = JSON.parse(sessionStorage.getItem("board")).color;
+const boardName = JSON.parse(sessionStorage.getItem("board")).name;
 const token = sessionStorage.getItem("token");
 
 var firstChild = document.getElementById("firstChild");
@@ -15,6 +16,7 @@ var listName = document.getElementById("listName");
 window.onload = function(){
     document.getElementById("nav-header").style.backgroundColor = boardColor;
     document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
+    document.getElementById("boardName").innerHTML = boardName;
 }
 
 class List{
@@ -23,19 +25,29 @@ class List{
         this.listId =  listId;
     }   
 
-    //a lista é um item dentro da "lista Pai"
+    //a lista é uma outra lista dentro dentro da "lista Pai"
     init(){ 
-        
+        //Hierarquia: li->ul->li->div->span->->textNode
         let li = document.createElement("li");
-        li.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 mx-2");
+        li.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 mr-2 ml-0");
         li.setAttribute("id", this.listId)
+        let ul = document.createElement("ul");
+        ul.setAttribute("class", "p-0");
+        ul.setAttribute("class", "list")
+        ul.style.backgroundColor = "#ebecf0";
         
+
+        let title = document.createElement("li");
+        let firstChild = document.createElement("li");
+        firstChild.appendChild(new BtnIsertCard().init());
+
+
         let div = document.createElement("div");
-        div.setAttribute("class", " card list");
-        div.style.backgroundColor = "#ebecf0";
+        div.setAttribute("class", " card title");
+        
         
         let spn = document.createElement("span");
-        spn.setAttribute("class" , "spnList d-flex justify-content-center");
+
         
         let p = document.createElement("p");
         let text = document.createTextNode(this.name);
@@ -43,8 +55,20 @@ class List{
         p.appendChild(text);
         spn.appendChild(p);
         div.appendChild(spn);
-        li.appendChild(div);
+        title.appendChild(div);
+        ul.appendChild(title);
+        ul.appendChild(firstChild);
+        li.appendChild(ul);
         return li;
+    }
+}
+class BtnIsertCard{
+    init(){
+        let div = document.createElement("link");
+        div.setAttribute("class", "d-flex justify-content-center mw-100");
+        let text = document.createTextNode("+ Add another card");
+        div.appendChild(text);
+        return div;
     }
 }
 

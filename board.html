@@ -28,15 +28,20 @@
                 </button>
             </div>
         </nav>
-    <div class="row mw-100 p-0 m-0">
-        <div class="col-12 p-1 ">
-            <p class="font-weight-bold" id="boardName">Teste</p>
+    <div class="d-flex justify-content-between">
+        <div class="pl-1">    
+            <p contenteditable="true" class=" ml-4 font-weight-bold mt-2 btn-sup" id="boardName">Teste</p>
         </div>
+        <div class="mr-5 ">
+            <input type="button" class="btn-sup mt-2" value="Alterar cor">
+            <!-- <input type="button" class="btn-sup" value="Nada"> -->
+        </div>
+
     </div>
     <div class="container-fluid mh-100" id="mainDiv">
-        <ul class="row list-group-horizontal px-0 w-100 m-1" id="fatherRow">
-            <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 mx-2">
-                <div id="newList" class="card " data-toggle="collapse" href="#formList" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <ul class="row list-group-horizontal px-2 w-100 m-0" id="fatherRow">
+            <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 ">
+                <div id="newList" class="card m-0" data-toggle="collapse" href="#formList" role="button" aria-expanded="false" aria-controls="collapseExample">
                     <span id="spnList" onclick="closeAlert(this)">
                         <p>Nova lista</p>
                     </span>
