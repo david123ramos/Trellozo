@@ -25,7 +25,7 @@ getBoards();
 
 
 //usada para mudar a letra que aparece no botão de perfil nas páginas
-function getUserName(){
+ function getUserName(){
     var url = "https://tads-trello.herokuapp.com/api/trello/users/"+token;
     console.log(url);
     var xhttp = new XMLHttpRequest();

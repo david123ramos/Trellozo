@@ -5,6 +5,14 @@ body{
 h1{
     color: white;
 }
+@font-face{
+    font-family: ff_market_pro_bold;
+    src: url('font/marketweb.ttf');
+}
+.ff_market{
+    font-family: ff_market_pro_bold;
+    font-size: 40px;
+}
 ul{
     list-style-type: none;
 }
@@ -41,21 +49,46 @@ ul{
 #newList:hover {
     cursor: pointer;
 }
+
+::-webkit-scrollbar{
+    width: 6px;
+    background-color: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #00000083;
+    border-radius: 10px;
+}
+.defaultBgcolor{
+    background-color: #ebecf0;
+}
 .list{
     border-radius: 5px;
     padding: 5px 5px 5px 5px;
     /* margin: 1rem 0rem 0rem 1rem; */
     width: 100% !important;
-    background-color: #ebecf0;
     border-color: transparent;
+    width: 300px;
+    /* height: 500px; */
+    max-height: 400px;
+    overflow: auto;
 }
 .list:hover {
     cursor: pointer;
 }
 .title{   
     font-weight: bold;
-    background-color: #ebecf0;
     border: none;
+    margin: 0px 0px 0px 5px;
+}
+.secondaryText{
+    font-weight: bold;
+    font-family: monospace;    
+    margin: 0px 5px 5px 5px;
+    border-radius: 4px;
+}
+.secondaryText:hover{
+    background-color: rgba(0, 51, 255, 0.122);
+
 }
 
 .btn-circle{
@@ -81,5 +114,16 @@ ul{
 input::-webkit-input-placeholder{
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.cardList{
+    width: 100%;
+    height: 66px;
+    border-bottom: 1px outset rgb(0, 0, 0);
+    background-color: white;
+    margin: 0px 0px 5px 0px;
+    border-radius: 5px;
+    padding: 6px 8px 2px;
 
 }

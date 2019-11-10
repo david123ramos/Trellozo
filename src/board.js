@@ -6,6 +6,8 @@ const token = sessionStorage.getItem("token");
 
 var firstChild = document.getElementById("firstChild");
 var fatherRow =  document.getElementById("fatherRow");
+var acountButton = document.getElementsByClassName("spnRoundedButton").item(0);
+ 
 
 //Forms e divs
 var formCreateList = document.getElementById("formCreateList");
@@ -17,6 +19,8 @@ window.onload = function(){
     document.getElementById("nav-header").style.backgroundColor = boardColor;
     document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
     document.getElementById("boardName").innerHTML = boardName;
+    getUserName();
+
 }
 
 class List{
@@ -27,23 +31,38 @@ class List{
 
     //a lista é uma outra lista dentro dentro da "lista Pai"
     init(){ 
-        //Hierarquia: li->ul->li->div->span->->textNode
+        //Hierarquia: li->->div->ul->li->div->span->->textNode
         let li = document.createElement("li");
         li.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 mr-2 ml-0");
         li.setAttribute("id", this.listId)
+
+        let divMain = document.createElement("div");
+
         let ul = document.createElement("ul");
         ul.setAttribute("class", "p-0");
         ul.setAttribute("class", "list")
-        ul.style.backgroundColor = "#ebecf0";
+        ul.classList.add("defaultBgcolor");
+        
+        divMain.classList.add("defaultBgcolor");
+        divMain.classList.add("rounded");
+        divMain.classList.add("pb-1");
+       
         
 
-        let title = document.createElement("li");
-        let firstChild = document.createElement("li");
+
+        let firstChild = document.createElement("div");
         firstChild.appendChild(new BtnIsertCard().init());
+        firstChild.addEventListener("click", function(){
+            let li = document.createElement("li");
+            li.setAttribute("class", "d-flex justify-content-center");
+            li.appendChild(new Card().init());
+            ul.appendChild(li);
+        });
 
 
         let div = document.createElement("div");
         div.setAttribute("class", " card title");
+        div.classList.add("defaultBgcolor");
         
         
         let spn = document.createElement("span");
@@ -55,19 +74,33 @@ class List{
         p.appendChild(text);
         spn.appendChild(p);
         div.appendChild(spn);
-        title.appendChild(div);
-        ul.appendChild(title);
-        ul.appendChild(firstChild);
-        li.appendChild(ul);
+        divMain.appendChild(div);
+        divMain.appendChild(firstChild);
+        divMain.insertBefore(ul, firstChild);
+
+        li.appendChild(divMain);
         return li;
     }
 }
+
+/*Botão usado para inserir um novo card dentro de uma lista*/
 class BtnIsertCard{
     init(){
-        let div = document.createElement("link");
+        let div = document.createElement("a");
         div.setAttribute("class", "d-flex justify-content-center mw-100");
         let text = document.createTextNode("+ Add another card");
+        div.classList.add("secondaryText");
         div.appendChild(text);
+        return div;
+    }
+}
+
+/*Classe que define o card */
+class Card{
+
+    init(){
+        let div = document.createElement("div");
+        div.classList.add("cardList");
         return div;
     }
 }
@@ -123,4 +156,22 @@ function resetForm(){
     setTimeout(function(){
         spnListTitle.style.display = "block";
     }, 350)
+}
+
+//usada para mudar a letra que aparece no botão de perfil nas páginas
+function getUserName(){
+    var url = "https://tads-trello.herokuapp.com/api/trello/users/"+token;
+    console.log(url);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var obj = JSON.parse(this.responseText);
+            console.log(obj.name);
+            acountButton.innerHTML = obj.name.charAt(0);
+            
+        }
+    }
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(url);
 }

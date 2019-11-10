@@ -6,6 +6,14 @@ body{
 h1{
     color: white;
 }
+@font-face{
+    font-family: ff_market_pro_bold;
+    src: url('font/marketweb.ttf');
+}
+.ff_market{
+    font-family: ff_market_pro_bold;
+    font-size: 40px;
+}
 #nav-header{
     background-color: #026aa7;
 }
