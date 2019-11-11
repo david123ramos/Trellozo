@@ -34,14 +34,12 @@
         </div>
         <div class="mr-5 ">
             <input type="button" class="btn-sup mt-2" value="Alterar cor">
-            <!-- <input type="button" class="btn-sup" value="Nada"> -->
         </div>
-
     </div>
     <div class="container-fluid mh-100" id="mainDiv">
         <ul class="row list-group-horizontal px-2 w-100 m-0" id="fatherRow">
             <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 ">
-                <div id="newList" class="card m-0" data-toggle="collapse" href="#formList" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <div id="newList" class="card m-0" data-toggle="collapse" href="#formList" role="button"aria-expanded="false">
                     <span id="spnList" onclick="closeAlert(this)">
                         <p>Nova lista</p>
                     </span>
@@ -50,7 +48,7 @@
                             <input autofocus type="text" class="form-control" id="listName" placeholder="Nome da lista" required maxlength="30">
                             <div class="d-flex justify-content-start">
                                 <input type="submit" class="btn btn-success m-1"  value="Criar">
-                                <button type="button" class="close" aria-label="Close" onclick="resetForm()">
+                                <button type="button" class="close" onclick="resetForm()">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>

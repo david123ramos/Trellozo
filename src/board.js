@@ -23,6 +23,7 @@ window.onload = function(){
 
 }
 
+/*Classe que define uma lista */
 class List{
     constructor(name, listId){
         this.name = name;
@@ -31,42 +32,58 @@ class List{
 
     //a lista é uma outra lista dentro dentro da "lista Pai"
     init(){ 
-        //Hierarquia: li->->div->ul->li->div->span->->textNode
+        //Hierarquia: li->div->ul->li->div->span->->textNode
         let li = document.createElement("li");
         li.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 mr-2 ml-0");
         li.setAttribute("id", this.listId)
 
-        let divMain = document.createElement("div");
-
+        
         let ul = document.createElement("ul");
-        ul.setAttribute("class", "p-0");
-        ul.setAttribute("class", "list")
-        ul.classList.add("defaultBgcolor");
-        
-        divMain.classList.add("defaultBgcolor");
-        divMain.classList.add("rounded");
-        divMain.classList.add("pb-1");
-       
-        
+        ul.setAttribute("class", "p-0 list defaultBgcolor");
 
-
+        
+        let divMain = document.createElement("div");
+        divMain.setAttribute("class", " defaultBgcolor rounded pb-1");
+        
         let firstChild = document.createElement("div");
         firstChild.appendChild(new BtnIsertCard().init());
+
         firstChild.addEventListener("click", function(){
             let li = document.createElement("li");
-            li.setAttribute("class", "d-flex justify-content-center");
-            li.appendChild(new Card().init());
+            
+            let close = new CloseButton().init();
+            let add = new AddButton().init();
+            
+            //TODO: enviar o card para o servidor
+            add.addEventListener("click", function(){
+                keyEvent();
+            });
+
+            //o botao de fechar precisa remover o item que foi appendado na lista
+            close.addEventListener("click", ()=>{
+                ul.removeChild(li);
+                showAlert(firstChild);
+
+            });
+
+            //card -> textArea -> divWrapper -> botaoAdd -> botaoClose
+            let card = new Card().init();
+            let divWrapper = new DivWrapper().init();
+            divWrapper.appendChild(add);
+            divWrapper.appendChild(close);
+            card.appendChild(divWrapper);
+            
+            li.appendChild(card);
             ul.appendChild(li);
+            closeAlert(firstChild);
+
         });
 
 
         let div = document.createElement("div");
-        div.setAttribute("class", " card title");
-        div.classList.add("defaultBgcolor");
-        
-        
-        let spn = document.createElement("span");
+        div.setAttribute("class", " card title defaultBgcolor");
 
+        let spn = document.createElement("span");
         
         let p = document.createElement("p");
         let text = document.createTextNode(this.name);
@@ -97,11 +114,56 @@ class BtnIsertCard{
 
 /*Classe que define o card */
 class Card{
-
+    
     init(){
         let div = document.createElement("div");
-        div.classList.add("cardList");
+        div.setAttribute("class", "divTextArea ");
+        
+        let textArea = document.createElement("textarea");
+        textArea.setAttribute("placeholder","Enter a title for this card...")
+        textArea.setAttribute("onkeypress", "keyEvent()");
+        textArea.classList.add("textCard")
+
+        div.appendChild(textArea);
+
+
         return div;
+    }
+
+}
+
+
+class DivWrapper{
+    init(){
+        let div =  document.createElement('div');
+        div.setAttribute("class", "d-flex justify-content-start");
+        return div;
+    }
+}
+
+class AddButton{
+    init(){
+        
+        let button = document.createElement("button");
+        button.setAttribute("class", "btn btn-success btn-textArea");
+        button.appendChild(document.createTextNode("Add card"));
+        
+        return button;
+    }
+}
+
+class CloseButton{
+    init(){
+
+        let close = document.createElement("button");
+        close.classList.add("close");
+               
+        let spn = document.createElement("span");
+        spn.appendChild(document.createTextNode("x"));
+        close.appendChild(spn);
+
+        
+        return close;
     }
 }
 
@@ -140,15 +202,9 @@ formCreateList.addEventListener("submit", function(e){
 
 
 
-function closeAlert(someElement){      
-    if(someElement == 'string'){
-        document.getElementById(someElement).style.display = "none";
-    }else{
-        someElement.style.display = "none";
-    }
-}
 
 //.collapse('toggle') alterna a vizualizção da classe collapse que está em uma div
+//TODO : não usar jQuery
 function resetForm(){
     formCreateList.reset();
     $('#formList').collapse('toggle')
@@ -174,4 +230,27 @@ function getUserName(){
     xhttp.open("GET", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(url);
+}
+
+function closeAlert(someElement){      
+    if(someElement == 'string'){
+        document.getElementById(someElement).classList.add("none");
+    }else{
+        someElement.classList.add("none");
+    }
+}
+function showAlert(someElement){
+    someElement.classList.remove("none");
+    someElement.classList.add("block");
+}
+
+//função que vai ser executada quando for detectada o evento da tecla "ENTER" dentro da textarea do card
+function keyEvent(){
+    let key = window.event.keyCode;
+
+    if(key == 13){
+        let div = document.createElement("div");
+        div.setAttribute("class", "textCard");
+        return div;
+    }
 }
