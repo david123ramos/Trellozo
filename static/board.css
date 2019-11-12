@@ -43,7 +43,7 @@ ul{
     padding: 5px 5px 0px 5px;
     font-weight: bold;
     width: 100%;
-    background-color: #ebecf0;
+    background-color: #ffffff8e;
     border-color: transparent;
 }
 #newList:hover {
@@ -133,10 +133,25 @@ input::-webkit-input-placeholder{
     border-radius: 5px;
     border: none;
     border-bottom: 1px outset rgb(0, 0, 0);    
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0.3rem 0.5rem;
     background-color: white;
-    margin: 0px 0px 0px 0px;
     resize: none;
-
+}
+.textCardSubmited{
+    width: 100% !important;
+    height: 66px;
+    max-width: 100%;
+    border-radius: 5px;
+    border: none;
+    box-shadow: #00000083;
+    background-color: rgba(255, 255, 255, 0.849);
+    padding: 0.3rem 0.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+ 
+    box-shadow: 0px 3px 7px -2px rgba(0,0,0,0.46);
+    
 }
 
 .btn-textArea{

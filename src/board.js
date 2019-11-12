@@ -7,6 +7,8 @@ const token = sessionStorage.getItem("token");
 var firstChild = document.getElementById("firstChild");
 var fatherRow =  document.getElementById("fatherRow");
 var acountButton = document.getElementsByClassName("spnRoundedButton").item(0);
+//usada para pegar o texto do textArea do card
+var textAreaM = "";
  
 
 //Forms e divs
@@ -19,6 +21,7 @@ window.onload = function(){
     document.getElementById("nav-header").style.backgroundColor = boardColor;
     document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
     document.getElementById("boardName").innerHTML = boardName;
+    document.getElementsByTagName("title").innerHTML = boardName + " | Trellozo";
     getUserName();
 
 }
@@ -56,14 +59,23 @@ class List{
             
             //TODO: enviar o card para o servidor
             add.addEventListener("click", function(){
-                keyEvent();
+                if(textAreaM != ""){
+                    
+                    let div =  document.createElement("div");
+                    div.classList.add("textCardSubmited");
+                    div.appendChild(document.createTextNode(textAreaM));
+                    let liCard = document.createElement("li");
+                    liCard.classList.add("divTextArea");
+                    liCard.appendChild(div);
+                    li.insertAdjacentElement('beforebegin', liCard);
+                }
             });
 
             //o botao de fechar precisa remover o item que foi appendado na lista
             close.addEventListener("click", ()=>{
                 ul.removeChild(li);
+                textAreaM =  "";
                 showAlert(firstChild);
-
             });
 
             //card -> textArea -> divWrapper -> botaoAdd -> botaoClose
@@ -114,12 +126,15 @@ class BtnIsertCard{
 
 /*Classe que define o card */
 class Card{
-    
+
     init(){
         let div = document.createElement("div");
         div.setAttribute("class", "divTextArea ");
         
         let textArea = document.createElement("textarea");
+        textArea.addEventListener("change", ()=>{
+            textAreaM = textArea.value;
+        });
         textArea.setAttribute("placeholder","Enter a title for this card...")
         textArea.setAttribute("onkeypress", "keyEvent()");
         textArea.classList.add("textCard")
@@ -129,6 +144,8 @@ class Card{
 
         return div;
     }
+
+
 
 }
 
@@ -146,6 +163,7 @@ class AddButton{
         
         let button = document.createElement("button");
         button.setAttribute("class", "btn btn-success btn-textArea");
+        button.setAttribute("type", "submit");
         button.appendChild(document.createTextNode("Add card"));
         
         return button;
@@ -210,7 +228,8 @@ function resetForm(){
     $('#formList').collapse('toggle')
     
     setTimeout(function(){
-        spnListTitle.style.display = "block";
+        spnListTitle.classList.remove("none");
+        spnListTitle.classList.add("block");
     }, 350)
 }
 
@@ -253,4 +272,8 @@ function keyEvent(){
         div.setAttribute("class", "textCard");
         return div;
     }
+}
+
+function mainPage(){
+    window.location.href ="main.html"
 }
