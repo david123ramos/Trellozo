@@ -3,12 +3,12 @@ const boardID = JSON.parse(sessionStorage.getItem("board")).id;
 const boardColor = JSON.parse(sessionStorage.getItem("board")).color;
 const boardName = JSON.parse(sessionStorage.getItem("board")).name;
 const token = sessionStorage.getItem("token");
+const data =  dataAtualFormatada();
 
 var firstChild = document.getElementById("firstChild");
 var fatherRow =  document.getElementById("fatherRow");
 var acountButton = document.getElementsByClassName("spnRoundedButton").item(0);
-//usada para pegar o texto do textArea do card
-var textAreaM = "";
+
  
 
 //Forms e divs
@@ -38,11 +38,12 @@ class List{
         //Hierarquia: li->div->ul->li->div->span->->textNode
         let li = document.createElement("li");
         li.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 mr-2 ml-0");
-        li.setAttribute("id", this.listId)
+       
 
         
-        let ul = document.createElement("ul");
-        ul.setAttribute("class", "p-0 list defaultBgcolor");
+        var ul = document.createElement("ul");
+        ul.setAttribute("class", "p-0 list defaultBgcolor"); 
+        ul.setAttribute("id", this.listId)
 
         
         let divMain = document.createElement("div");
@@ -52,41 +53,39 @@ class List{
         firstChild.appendChild(new BtnIsertCard().init());
 
         firstChild.addEventListener("click", function(){
-            let li = document.createElement("li");
+            let newLi = document.createElement("li");
             
             let close = new CloseButton().init();
             let add = new AddButton().init();
             
-            //TODO: enviar o card para o servidor
-            add.addEventListener("click", function(){
-                if(textAreaM != ""){
-                    
-                    let div =  document.createElement("div");
-                    div.classList.add("textCardSubmited");
-                    div.appendChild(document.createTextNode(textAreaM));
-                    let liCard = document.createElement("li");
-                    liCard.classList.add("divTextArea");
-                    liCard.appendChild(div);
-                    li.insertAdjacentElement('beforebegin', liCard);
-                }
-            });
-
+            
             //o botao de fechar precisa remover o item que foi appendado na lista
             close.addEventListener("click", ()=>{
-                ul.removeChild(li);
-                textAreaM =  "";
+                ul.removeChild(newLi);
                 showAlert(firstChild);
             });
+            
+            //form -> textArea -> divWrapper -> botaoAdd -> botaoClose
+            let form = new formCard().init();
+            form.getElementsByTagName("textarea")[0].focus();
 
-            //card -> textArea -> divWrapper -> botaoAdd -> botaoClose
-            let card = new Card().init();
+            form.addEventListener("submit", function(e){
+                e.preventDefault();
+                if(this.getElementsByTagName("textarea")[0].value != ""){
+                    createCard(this.getElementsByTagName("textarea")[0].value, ul.id);
+                    this.reset();
+                    this.getElementsByTagName("textarea")[0].focus();
+                }
+            });
+            
+
             let divWrapper = new DivWrapper().init();
             divWrapper.appendChild(add);
             divWrapper.appendChild(close);
-            card.appendChild(divWrapper);
-            
-            li.appendChild(card);
-            ul.appendChild(li);
+            form.appendChild(divWrapper);
+            form.focus();
+            newLi.appendChild(form);
+            ul.appendChild(newLi);
             closeAlert(firstChild);
 
         });
@@ -124,36 +123,49 @@ class BtnIsertCard{
     }
 }
 
-/*Classe que define o card */
+/*Classe que define um card */
 class Card{
+    constructor(cardName, cardId){
+        this.cardName = cardName;
+        this.cardId = cardId;
+    }
+    
+    init(){
+        let div =  document.createElement("div");
+        div.setAttribute("class", "card p-2 textCardSubmited")
+        div.appendChild(document.createTextNode(this.cardName));
+        let liCard = document.createElement("li");
+        liCard.classList.add("divTextArea");
+        liCard.setAttribute("id", this.cardId)
+        liCard.appendChild(div);
+        return liCard;
+    }
+}
+
+/*Classe que define o form para a criação de um card */
+class formCard{
 
     init(){
+        let form = document.createElement("form");
         let div = document.createElement("div");
         div.setAttribute("class", "divTextArea ");
         
         let textArea = document.createElement("textarea");
-        textArea.addEventListener("change", ()=>{
-            textAreaM = textArea.value;
-        });
         textArea.setAttribute("placeholder","Enter a title for this card...")
-        textArea.setAttribute("onkeypress", "keyEvent()");
         textArea.classList.add("textCard")
 
         div.appendChild(textArea);
+        form.appendChild(div);
 
-
-        return div;
+        return form;
     }
-
-
-
 }
 
 
 class DivWrapper{
     init(){
         let div =  document.createElement('div');
-        div.setAttribute("class", "d-flex justify-content-start");
+        div.setAttribute("class", "d-flex justify-content-start p-1");
         return div;
     }
 }
@@ -191,14 +203,13 @@ formCreateList.addEventListener("submit", function(e){
     var board ={
         "name" : listName.value,
         "token": token,
-        "board_id": "10742"
+        "board_id": boardID
     }
     var url = "https://tads-trello.herokuapp.com/api/trello/lists/new";
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
-            console.log(obj);
             let newList = new List(obj.name, obj.id);
             fatherRow.insertBefore(newList.init(), firstChild);
             
@@ -275,5 +286,41 @@ function keyEvent(){
 }
 
 function mainPage(){
-    window.location.href ="main.html"
+   return window.location.href ="main.html"
+}
+
+function createCard(nameCard, listId){
+    var card ={
+        "name" : nameCard,
+        "data" : data,
+        "token": token,
+        "list_id": listId
+    }
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/new";
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var obj = JSON.parse(this.responseText);
+            let card =  new Card(obj.name, obj.id).init();
+            document.getElementById(listId).insertAdjacentElement("beforebegin", card);
+
+        }else if(this.readyState == 4 && this.status == 400){
+
+        }
+    }
+
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(card));  
+
+}
+
+function dataAtualFormatada(){
+    var data = new Date(),
+        dia  = data.getDate().toString(),
+        diaF = (dia.length == 1) ? '0'+dia : dia,
+        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = (mes.length == 1) ? '0'+mes : mes,
+        anoF = data.getFullYear();
+    return diaF+"/"+mesF+"/"+anoF;
 }
