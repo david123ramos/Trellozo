@@ -333,7 +333,6 @@ function getLists(){
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
-            console.log(obj);
             obj.forEach(printLists);
 
         }else if(this.readyState == 4 && this.status == 400){
@@ -348,5 +347,28 @@ function getLists(){
 
 function printLists(someList){
     let list = new List(someList.name, someList.id);
+    getCards(someList.id);
     fatherRow.insertBefore(list.init(), firstChild);
 }
+
+function getCards(listId){
+    var url = " https://tads-trello.herokuapp.com/api/trello/cards/"+token+"/list/"+listId
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var obj = JSON.parse(this.responseText);
+            let l = document.getElementById(listId);
+            for(let i in obj){
+                l.insertAdjacentElement("beforebegin", new Card(obj[i].name, obj[i].id).init());
+            }
+
+        }else if(this.readyState == 4 && this.status == 400){
+
+        }
+    }
+
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(url));  
+}
+
