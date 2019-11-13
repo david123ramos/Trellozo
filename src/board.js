@@ -17,14 +17,14 @@ var divCreateList =  document.getElementById("formList");
 var spnListTitle = document.getElementById("spnList");
 var listName = document.getElementById("listName");
 
-window.onload = function(){
+
     document.getElementById("nav-header").style.backgroundColor = boardColor;
     document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
     document.getElementById("boardName").innerHTML = boardName;
     document.getElementsByTagName("title")[0].innerHTML = boardName + " | Trellozo";
     getUserName();
-    this.getLists();
-}
+    getLists();
+
 
 /*Classe que define uma lista */
 class List{
@@ -302,7 +302,9 @@ function createCard(nameCard, listId){
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
             let card =  new Card(obj.name, obj.id).init();
-            document.getElementById(listId).insertAdjacentElement("beforebegin", card);
+            let l = document.getElementById(listId);
+            let sizeList = l.querySelectorAll("li").length
+            l.insertBefore(card, l.childNodes[sizeList -1]);
 
         }else if(this.readyState == 4 && this.status == 400){
 
@@ -359,7 +361,7 @@ function getCards(listId){
             var obj = JSON.parse(this.responseText);
             let l = document.getElementById(listId);
             for(let i in obj){
-                l.insertAdjacentElement("beforebegin", new Card(obj[i].name, obj[i].id).init());
+                l.appendChild(new Card(obj[i].name, obj[i].id).init());
             }
 
         }else if(this.readyState == 4 && this.status == 400){
