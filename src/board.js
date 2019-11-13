@@ -23,7 +23,7 @@ window.onload = function(){
     document.getElementById("boardName").innerHTML = boardName;
     document.getElementsByTagName("title")[0].innerHTML = boardName + " | Trellozo";
     getUserName();
-
+    this.getLists();
 }
 
 /*Classe que define uma lista */
@@ -323,4 +323,30 @@ function dataAtualFormatada(){
         mesF = (mes.length == 1) ? '0'+mes : mes,
         anoF = data.getFullYear();
     return diaF+"/"+mesF+"/"+anoF;
+}
+
+
+function getLists(){
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/lists/"+token+"/board/"+boardID
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var obj = JSON.parse(this.responseText);
+            console.log(obj);
+            obj.forEach(printLists);
+
+        }else if(this.readyState == 4 && this.status == 400){
+
+        }
+    }
+
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(url));  
+}
+
+function printLists(someList){
+    let list = new List(someList.name, someList.id);
+    fatherRow.insertBefore(list.init(), firstChild);
 }
