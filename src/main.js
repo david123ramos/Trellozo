@@ -168,7 +168,7 @@ formCreateBoard.addEventListener("submit", function(e){
 /*Muita repetição de código */
 
 //Recebe qualquer elemento e oculta sua vizualização
-//Se o argumento passado for uma string quer dizer que estou passando um id para a função
+//Se o argumento passado for uma string quer dizer que estou passando um id de um objeto
 function closeAlert(someElement){      
     if(someElement == 'string'){
         document.getElementById(someElement).style.display = "none";

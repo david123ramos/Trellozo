@@ -18,12 +18,31 @@ var spnListTitle = document.getElementById("spnList");
 var listName = document.getElementById("listName");
 
 
-    document.getElementById("nav-header").style.backgroundColor = boardColor;
-    document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
-    document.getElementById("boardName").innerHTML = boardName;
-    document.getElementsByTagName("title")[0].innerHTML = boardName + " | Trellozo";
-    getUserName();
-    getLists();
+document.getElementById("nav-header").style.backgroundColor = boardColor;
+document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
+document.getElementById("boardName").classList.add("overflowHidden");
+document.getElementById("boardName").innerHTML = boardName;
+document.getElementsByTagName("title")[0].innerHTML = boardName + " | Trellozo";
+getUserName();
+getLists();
+
+window.onload = function(){
+    let colorButtons = document.querySelectorAll(".btn-color");
+    let aux = Array.from(colorButtons);
+
+        aux.map(function(colorButton){
+            let color = getComputedStyle(colorButton).getPropertyValue("background-color");
+            colorButton.addEventListener("click", function(){
+                document.getElementsByTagName("body")[0].style.backgroundColor = color;
+                document.getElementById("nav-header").style.backgroundColor = color;
+                let ax = JSON.parse(sessionStorage.getItem("board"));
+                ax.color = color;
+                sessionStorage.setItem("board", JSON.stringify(ax));
+                changeBodyColor(color);
+            });
+    });
+
+}
 
 
 /*Classe que define uma lista */
@@ -137,6 +156,7 @@ class Card{
         let liCard = document.createElement("li");
         liCard.classList.add("divTextArea");
         liCard.setAttribute("id", this.cardId)
+        liCard.setAttribute("draggable", "true");
         liCard.appendChild(div);
         return liCard;
     }
@@ -244,6 +264,26 @@ function resetForm(){
     }, 350)
 }
 
+function changeBodyColor(color){
+
+    let board = {
+        "board_id": boardID,
+        "color": color,
+        "token": token
+    }
+    var url = " https://tads-trello.herokuapp.com/api/trello/boards/newcolor";
+    console.log(url);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+
+        }
+    }
+    xhttp.open("PATCH", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(board));
+}
+
 //usada para mudar a letra que aparece no botão de perfil nas páginas
 function getUserName(){
     var url = "https://tads-trello.herokuapp.com/api/trello/users/"+token;
@@ -327,6 +367,10 @@ function dataAtualFormatada(){
     return diaF+"/"+mesF+"/"+anoF;
 }
 
+//função usada para renomear limitar a quantidade de caracteres que o usuário pode colocar na renomeação do board
+function renameBoard(){
+
+}
 
 function getLists(){
 
@@ -374,3 +418,27 @@ function getCards(listId){
     xhttp.send(JSON.stringify(url));  
 }
 
+function excludeBoard(){
+
+    let b = {
+        "board_id": boardID,
+        "token": token
+    }
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/boards/delete"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+
+            window.location.href ="main.html"
+
+        }else if(this.readyState == 4 && this.status == 400){
+
+        }
+    }
+
+    xhttp.open("DELETE", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(b));  
+    
+}

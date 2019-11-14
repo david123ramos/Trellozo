@@ -66,6 +66,8 @@ ul{
     margin: 0;
     width: 30px;
     height: 30px;
+    border-radius: 4px;
+    border: none;
 }
 #divRegisterBoard{
    position: absolute;
