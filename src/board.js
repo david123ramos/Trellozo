@@ -64,6 +64,9 @@ class List{
         ul.setAttribute("class", "p-0 list defaultBgcolor"); 
         ul.setAttribute("id", this.listId)
 
+        ul.ondrop = function(){drop()};
+        ondrop="drop(event)"
+        ul.ondragover = function(){allowDrop()};
         
         let divMain = document.createElement("div");
         divMain.setAttribute("class", " defaultBgcolor rounded pb-1");
@@ -158,6 +161,7 @@ class Card{
         liCard.setAttribute("id", this.cardId)
         liCard.setAttribute("draggable", "true");
         liCard.appendChild(div);
+        liCard.ondragstart = function(){drag()};
         return liCard;
     }
 }
@@ -440,5 +444,18 @@ function excludeBoard(){
     xhttp.open("DELETE", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(b));  
-    
+}
+
+
+function allowDrop(e){
+    e.preventDefault();
+}
+
+function drag(e){
+    e.dataTransfer.set("element", e.target.id);
+}
+
+function drop(e){
+    e.preventDefault();
+    e.target.appendChild(document.getElementById(e.dataTransfer.getData("element")))
 }
