@@ -61,13 +61,21 @@ class List{
 
         
         var ul = document.createElement("ul");
-        ul.setAttribute("class", "p-0 list defaultBgcolor"); 
+        ul.setAttribute("class", "p-1 list defaultBgcolor"); 
         ul.setAttribute("id", this.listId)
-
-        ul.ondrop = function(){drop()};
-        ondrop="drop(event)"
-        ul.ondragover = function(){allowDrop()};
         
+        ul.ondrop = function(){drop(event)};
+        
+        ul.ondragover = function(event){ allowDrop(event); this.classList.add("dragOn")};
+        
+        ul.ondragleave=  function(){
+          
+            this.classList.remove("dragOn");
+        }
+        ul.ondragend = function(){  
+            this.classList.remove("dragOn");
+            document.getElementsByClassName("spnDelete-ev")[0].classList.replace("spnDelete-ev", "spnDelete")
+        }
         let divMain = document.createElement("div");
         divMain.setAttribute("class", " defaultBgcolor rounded pb-1");
         
@@ -157,11 +165,11 @@ class Card{
         div.setAttribute("class", "card p-2 textCardSubmited")
         div.appendChild(document.createTextNode(this.cardName));
         let liCard = document.createElement("li");
-        liCard.classList.add("divTextArea");
+        div.classList.add("divTextArea");
         liCard.setAttribute("id", this.cardId)
-        liCard.setAttribute("draggable", "true");
+        liCard.setAttribute("draggable", true);
+        liCard.ondragstart = function(){liCard.classList.add("drag"); div.classList.add("noShadow");  drag(event)};
         liCard.appendChild(div);
-        liCard.ondragstart = function(){drag()};
         return liCard;
     }
 }
@@ -444,18 +452,92 @@ function excludeBoard(){
     xhttp.open("DELETE", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(b));  
+    
 }
-
 
 function allowDrop(e){
     e.preventDefault();
+    if (e.target.getAttribute("draggable") == "true")
+        e.dataTransfer.dropEffect = "none"; // dropping is not allowed
+    else
+        e.dataTransfer.dropEffect = "all"; // drop it like it's hot
 }
 
 function drag(e){
-    e.dataTransfer.set("element", e.target.id);
+    document.getElementsByClassName("spnDelete")[0].classList.replace("spnDelete", "spnDelete-ev");
+    e.dataTransfer.setData("fatherElement", e.target.parentNode.id);
+    e.dataTransfer.setData("element", e.target.id);
 }
 
 function drop(e){
     e.preventDefault();
-    e.target.appendChild(document.getElementById(e.dataTransfer.getData("element")))
+    let element = e.dataTransfer.getData("element");
+    let dragged = document.getElementById(element);
+    
+    //removendo as classes ativadas no drag
+    dragged.classList.remove("drag");
+    dragged.getElementsByClassName("textCardSubmited")[0].classList.remove("noShadow");
+        
+       if(e.target.tagName == 'UL'){
+           try{
+               e.target.appendChild(dragged);
+
+               changeCard(dragged.id, e.target.id);
+           }catch(err){
+               console.log("Algo deu errado");
+           }
+
+       }
+    
+}
+
+function deleteCard(e){
+    e.preventDefault();
+    let element = e.dataTransfer.getData("element");
+    let fatherElement = document.getElementById(e.dataTransfer.getData("fatherElement"))
+    let dragged = document.getElementById(element);
+    
+    let card = {
+        "card_id": dragged.id,
+        "token": token,
+    }
+
+    var url = " https://tads-trello.herokuapp.com/api/trello/cards/delete"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            fatherElement.removeChild(dragged)
+        }else if(this.readyState == 4 && this.status == 400){
+
+        }
+    }
+
+    xhttp.open("DELETE", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(card));  
+    
+
+}
+
+function changeCard(card_id, list_id){
+    let change = {
+        "token": token,
+        "card_id": card_id,
+        "list_id": list_id
+    }
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/changelist"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("sucesso");
+        }else if(this.readyState == 4 && this.status == 400){
+
+        }
+    }
+
+    xhttp.open("PATCH", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(change));  
+    
 }

@@ -158,3 +158,37 @@ input::-webkit-input-placeholder{
     padding: 3px !important;
     margin: 0px 3px 0px 0px;
 }
+.drag{
+    border: 1px solid black;
+    cursor: grab ;
+    border-radius: 5px;
+    /* -webkit-transform:rotate(-3deg) skew(5deg); */
+    transform:rotate(2deg) skew(1deg);
+    opacity: 0.4;
+}
+
+.noShadow{
+    box-shadow: none;
+    margin: 0px;
+}
+.dragOn{
+    border: 3px dotted rgb(0, 0, 0);
+}
+
+.spnDelete{  
+    float: left;
+    display: inherit;
+    transition: opacity 1s ease-out;
+    opacity: 0;
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+}
+.spnDelete-ev{
+    background-color: rgb(255, 57, 57);
+    border: none;
+    opacity: 1;
+    display: block;
+    border-radius: 3px;
+    padding: 5px;
+}
