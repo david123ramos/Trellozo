@@ -202,3 +202,12 @@ input::-webkit-input-placeholder{
     border-radius: 3px;
     padding: 5px;
 }
+.inputNameCard{
+    overflow: visible;
+    border: 0;
+    resize: none;
+}
+.descriptionCard{
+    overflow: auto;
+    resize: none;
+}

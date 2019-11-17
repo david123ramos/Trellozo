@@ -164,7 +164,13 @@ class Card{
         div.appendChild(document.createTextNode(this.cardName));
         let liCard = document.createElement("li");
         div.classList.add("divTextArea");
-        liCard.setAttribute("id", this.cardId)
+        liCard.setAttribute("id", this.cardId);
+        //data-toggle="modal" data-target="#exampleModal"
+        liCard.setAttribute("data-toggle", "modal");
+        liCard.setAttribute("data-target", "#exampleModal");
+        liCard.onclick = ()=>{
+            openCard(this.cardName, this.cardId);
+        }
         liCard.setAttribute("draggable", true);
         liCard.ondragstart = function(){liCard.classList.add("drag"); div.classList.add("noShadow");  drag(event)};
         liCard.appendChild(div);
@@ -516,6 +522,27 @@ function drop(e){
 
        }
     
+}
+function openCard(cardName, cardId){
+    let title = document.getElementById("exampleModal").getElementsByTagName("textarea")[0];
+    title.style.width = cardName.length+"rem";
+    title.value = cardName;
+
+    document.getElementById("exampleModal").getElementsByTagName("textarea")[1].onkeydown  = function(event){
+        
+        if(event.keyCode == 13 && this.value != ""){
+            let li = document.createElement("li");
+            li.setAttribute("class", "list-group-item")
+            let div = document.createElement("div");
+            div.appendChild(document.createTextNode(this.value));
+            li.appendChild(div);
+            document.getElementById("commentList").appendChild(li);
+            this.value='';
+            this.blur();
+        }else if(event.keyCode == 13){
+            event.preventDefault();
+        }
+    }
 }
 
 function deleteCard(e){

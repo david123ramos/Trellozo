@@ -34,7 +34,7 @@
             <input size="1" autocomplete="off"  onkeydown="renameBoard(event, this)" maxlength="15" class=" ml-4 font-weight-bold mt-2 btn-sup success"
                 id="boardName"/>
         </div>
-        <div>
+        <div class="d-none d-sm-block">
             <div class="d-inline-flex">
                 <!-- <input type="button"  class="btn-sup mt-2" value="Alterar cor"> -->
                 <div class="btn-group">
@@ -125,7 +125,61 @@
             </li>
         </ul>
     </div>
+<!-- Modal que é aberto quando o card é clicado -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <textarea class="modal-title inputNameCard font-weight-bold" id="exampleModalLabel"></textarea>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="">
+            <div class="modal-body">
+                <div class="my-2">
+                   <h5 class="font-weight-bold">Comment list</h5>
+                    <ul id="commentList" class="list-group list-group-flush"></ul>
+                </div>
+                <div class="input-group mb-2 mr-sm-2">
+                    <textarea type="text" class="form-control descriptionCard" id="inlineFormInputGroupUsername2" placeholder="Comment"></textarea>
+                </div>
+                
+                <div class="mt-1">
+                    <label >Change for the list</label>
+                    <select name="" id="" class="form-control">
+                        <option value="">1</option>
+                        <option value="">2</option>
+                        <option value="">3</option>
+                        <option value="">4</option>
+                        <option value="">5</option>
+                        <option value="">6</option>
+                    </select>
+                </div>
 
+                <div class="mt-1">
+                    <label >Change date of board</label>
+                    <input type="date" class="form-control"/>
+                </div>
+                <div class="mt-1">
+                    <label >Tags</label>
+                    <ul id="cardTags" class="list-inline">
+                        <li class="list-inline-item m-1"><button class="btn bg-success"></button></li>
+                        <li class="list-inline-item m-1"><button class="btn bg-warning"></button></li>
+                        <li class="list-inline-item m-1"><button class="btn bg-danger"></button></li>
+                        <li class="list-inline-item m-1"><button class="btn bg-secondary"></button></li>
+                    </ul>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 
 
