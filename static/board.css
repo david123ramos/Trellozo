@@ -37,11 +37,19 @@ ul{
 #homeIconDiv:hover{
     cursor: pointer;
 }
-.overflowHidden{
-    max-width: 200px;
-    max-height: 34px;
-    overflow: hidden;
+
+#boardName{
+    width: 180px;
 }
+
+.success{
+    background-color: transparent;
+    transition: background-color 1000ms ease-in;
+}
+.success-af{
+    background-color: rgba(126, 255, 126, 0.534) !important;
+}
+
 #newList{
     margin: 1rem 1rem 0rem 1rem;
     border-radius: 5px;

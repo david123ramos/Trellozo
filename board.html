@@ -15,91 +15,106 @@
 <body>
 
     <nav class="navbar navbar-default navbar-static-top pb-1 pt-1" id="nav-header">
-            <div lass="nav-item">
-                <div id="homeIconDiv" class="navbar-brand" onclick="mainPage()">
-                    <img src="img/home.png" id="homeImg" alt="Home">
-                </div>
+        <div lass="nav-item">
+            <div id="homeIconDiv" class="navbar-brand" onclick="mainPage()">
+                <img src="img/home.png" id="homeImg" alt="Home">
             </div>
-            <div lass="nav-item">
-                <h1 class="ff_market">Trellozo</h1>
-            </div>
-            <div lass="nav-item">
-                <button class=" btn-circle p-0">
-                    <span class="spnRoundedButton"></span>
-                </button>
-            </div>
-        </nav>
-    <div class="d-flex justify-content-between">
-        <div class="pl-1 " >    
-            <p contenteditable="true" class=" ml-4 font-weight-bold mt-2 btn-sup" id="boardName"></p>
+        </div>
+        <div lass="nav-item">
+            <h1 class="ff_market">Trellozo</h1>
+        </div>
+        <div lass="nav-item">
+            <button class=" btn-circle p-0">
+                <span class="spnRoundedButton"></span>
+            </button>
+        </div>
+    </nav>
+    <div class="d-flex justify-content-between mb-3">
+        <div class="pl-1 ">
+            <input size="1" autocomplete="off"  onkeydown="renameBoard(event, this)" maxlength="15" class=" ml-4 font-weight-bold mt-2 btn-sup"
+                id="boardName"/>
         </div>
         <div>
             <div class="d-inline-flex">
                 <!-- <input type="button"  class="btn-sup mt-2" value="Alterar cor"> -->
                 <div class="btn-group">
-                        <button type="button" class="btn-sup dropdown-toggle mt-2 mx-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn-sup dropdown-toggle mt-2 mx-1" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         Alterar cor
-                        </button>
-                        <ul  class="dropdown-menu list-inline px-3">
-                            <div class="d-flex justify-content-center">Escolha uma cor</div>
-                            <div class="dropdown-divider"></div>
-                            <li class="list-inline-item m-1"><button style="background-color: #845EC2;" class="btn-color" ></button></li>
-                            <li class="list-inline-item m-1"><button style="background-color: #D65DB1;" class="btn-color" ></button></li>
-                            <li class="list-inline-item m-1"><button style="background-color: #FF6F91;" class="btn-color" ></button></li>
-                            <li class="list-inline-item m-1"><button style="background-color: #FFC75F;" class="btn-color" ></button></li>
-                            <li class="list-inline-item m-1"><button style="background-color: #0081CF;" class="btn-color" ></button></li>
-                            <li class="list-inline-item m-1"><button style="background-color: #00DBAD;" class="btn-color" ></button></li>
-                            <li class="list-inline-item m-1"><button style="background-color: #2F4858;" class="btn-color" ></button></li>
-                            <li class="list-inline-item m-1"><button style="background-color: #739C11;" class="btn-color" ></button></li>
-                            <li class="list-inline-item m-1"><button style="background-color: #0D949E;" class="btn-color" ></button></li>
-                        </ul>
-                </div>
-
-                <input type="button"  class="btn-sup mt-2 mr-1" value="Excluir board" data-toggle="modal" data-target="#modalExcluir">
-               
-                    <button class="mt-2 mr-1 spnDelete" ondragover="allowDrop(event)" ondrop="deleteCard(event)">
-                        <img src="img/delete.png" alt="">            
                     </button>
-             
+                    <ul class="dropdown-menu list-inline px-3">
+                        <div class="d-flex justify-content-center">Escolha uma cor</div>
+                        <div class="dropdown-divider"></div>
+                        <li class="list-inline-item m-1"><button style="background-color: #845EC2;"
+                                class="btn-color"></button></li>
+                        <li class="list-inline-item m-1"><button style="background-color: #D65DB1;"
+                                class="btn-color"></button></li>
+                        <li class="list-inline-item m-1"><button style="background-color: #FF6F91;"
+                                class="btn-color"></button></li>
+                        <li class="list-inline-item m-1"><button style="background-color: #FFC75F;"
+                                class="btn-color"></button></li>
+                        <li class="list-inline-item m-1"><button style="background-color: #0081CF;"
+                                class="btn-color"></button></li>
+                        <li class="list-inline-item m-1"><button style="background-color: #00DBAD;"
+                                class="btn-color"></button></li>
+                        <li class="list-inline-item m-1"><button style="background-color: #2F4858;"
+                                class="btn-color"></button></li>
+                        <li class="list-inline-item m-1"><button style="background-color: #739C11;"
+                                class="btn-color"></button></li>
+                        <li class="list-inline-item m-1"><button style="background-color: #0D949E;"
+                                class="btn-color"></button></li>
+                    </ul>
+                </div>
+                
+                <input type="button" class="btn-sup mt-2 mr-1" value="Excluir board" data-toggle="modal"
+                data-target="#modalExcluir"/>
+                <div class="d-xs-none">
+                        <button class="mt-2 mr-1 spnDelete" ondragover="allowDrop(event)" ondrop="deleteCard(event)">
+                            <img src="img/delete.png" alt="">
+                        </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!--Modal usado para chamar a a exclusão do board-->
-    <div class="modal fade " id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog "  role="document">
-              <div class="modal-content defaultBgcolor">
+    <div class="modal fade " id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content defaultBgcolor">
                 <div class="modal-header">
-                  <h4 class="modal-title" id="exampleModalLabel">Tem certeza que deseja excluir?</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Tem certeza que deseja excluir?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                 </div>
                 <div class="modal-body">
                     Se você apagar o Board automaticamente as listas e cards dentro dele serão excluídos.
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
-                  <button type="button" onclick="excludeBoard()" class="btn btn-danger">Sim</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                    <button type="button" onclick="excludeBoard()" class="btn btn-danger">Sim</button>
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
+    </div>
 
 
 
     <div class="container-fluid mh-100" id="mainDiv">
         <ul class="row list-group-horizontal px-2 w-100 m-0" id="fatherRow">
             <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 ">
-                <div id="newList" class="card m-0" data-toggle="collapse" href="#formList" role="button"aria-expanded="false">
+                <div id="newList" class="card m-0" data-toggle="collapse" href="#formList" role="button"
+                    aria-expanded="false">
                     <span id="spnList" onclick="closeAlert(this)">
                         <p>Nova lista</p>
                     </span>
                     <div class="collapse" id="formList" onclick="event.stopPropagation()">
                         <form action="" method="post" id="formCreateList">
-                            <input autofocus type="text" class="form-control" id="listName" placeholder="Nome da lista" required maxlength="30">
+                            <input autofocus type="text" class="form-control" id="listName" placeholder="Nome da lista"
+                                required maxlength="30">
                             <div class="d-flex justify-content-start">
-                                <input type="submit" class="btn btn-success m-1"  value="Criar">
+                                <input type="submit" class="btn btn-success m-1" value="Criar">
                                 <button type="button" class="close" onclick="resetForm()">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -111,13 +126,20 @@
         </ul>
     </div>
 
- 
+
 
 
     <script src="src/board.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
 </body>
+
 </html>

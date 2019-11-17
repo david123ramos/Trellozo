@@ -20,8 +20,7 @@ var listName = document.getElementById("listName");
 
 document.getElementById("nav-header").style.backgroundColor = boardColor;
 document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
-document.getElementById("boardName").classList.add("overflowHidden");
-document.getElementById("boardName").innerHTML = boardName;
+document.getElementById("boardName").value = boardName;
 document.getElementsByTagName("title")[0].innerHTML = boardName + " | Trellozo";
 getUserName();
 getLists();
@@ -94,6 +93,7 @@ class List{
                 ul.removeChild(newLi);
                 showAlert(firstChild);
             });
+           
             
             //form -> textArea -> divWrapper -> botaoAdd -> botaoClose
             let form = new formCard().init();
@@ -326,17 +326,6 @@ function showAlert(someElement){
     someElement.classList.add("block");
 }
 
-//função que vai ser executada quando for detectada o evento da tecla "ENTER" dentro da textarea do card
-function keyEvent(){
-    let key = window.event.keyCode;
-
-    if(key == 13){
-        let div = document.createElement("div");
-        div.setAttribute("class", "textCard");
-        return div;
-    }
-}
-
 function mainPage(){
    return window.location.href ="main.html"
 }
@@ -380,8 +369,42 @@ function dataAtualFormatada(){
 }
 
 //função usada para renomear limitar a quantidade de caracteres que o usuário pode colocar na renomeação do board
-function renameBoard(){
+function renameBoard(e, input){
 
+    if(e.keyCode == 13 && input.value != ""){
+        
+        let board = {
+            "board_id": boardID,
+            "name": input.value,
+            "token": token
+        }      
+        input.classList.add("success");
+    
+        var url = "https://tads-trello.herokuapp.com/api/trello/boards/rename"
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let b = JSON.parse(sessionStorage.getItem("board"));
+                b.name = input.value;
+                input.classList.replace("success", "success-af");
+                
+                document.getElementsByTagName("title")[0].innerHTML = input.value + " | Trellozo";
+                sessionStorage.setItem("board", JSON.stringify(b));
+
+            }else if(this.readyState == 4 && this.status == 400){
+
+            }
+        }
+    
+        xhttp.open("PATCH", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(board));  
+        
+        setTimeout(function(){
+            input.classList.replace("success-af", "success");
+            input.blur();
+        }, 1000)
+    }
 }
 
 function getLists(){
@@ -392,6 +415,7 @@ function getLists(){
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
             obj.forEach(printLists);
+
 
         }else if(this.readyState == 4 && this.status == 400){
 
@@ -458,9 +482,8 @@ function excludeBoard(){
 function allowDrop(e){
     e.preventDefault();
     if (e.target.getAttribute("draggable") == "true")
-        e.dataTransfer.dropEffect = "none"; // dropping is not allowed
-    else
-        e.dataTransfer.dropEffect = "all"; // drop it like it's hot
+        e.dataTransfer.dropEffect = "none";
+
 }
 
 function drag(e){
