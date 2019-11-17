@@ -49,7 +49,9 @@ ul{
 .success-af{
     background-color: rgba(126, 255, 126, 0.534) !important;
 }
-
+.error-af{
+    background-color: rgba(255, 31, 31, 0.548) !important;
+}
 #newList{
     margin: 1rem 1rem 0rem 1rem;
     border-radius: 5px;
@@ -185,8 +187,8 @@ input::-webkit-input-placeholder{
 
 .spnDelete{  
     float: left;
-    display: inherit;
-    transition: opacity 1s ease-out;
+    display: none;
+    transition: opacity display 1s ease-out;
     opacity: 0;
     border: none;
     border-radius: 3px;

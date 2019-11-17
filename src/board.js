@@ -51,7 +51,7 @@ class List{
         this.listId =  listId;
     }   
 
-    //a lista é uma outra lista dentro dentro da "lista Pai"
+    //a lista é uma outra lista(de cards) dentro dentro da "lista Pai"
     init(){ 
         //Hierarquia: li->div->ul->li->div->span->->textNode
         let li = document.createElement("li");
@@ -67,14 +67,13 @@ class List{
         
         ul.ondragover = function(event){ allowDrop(event); this.classList.add("dragOn")};
         
-        ul.ondragleave=  function(){
-          
-            this.classList.remove("dragOn");
-        }
+        ul.ondragleave=  function(){ this.classList.remove("dragOn");}
+
         ul.ondragend = function(){  
             this.classList.remove("dragOn");
             document.getElementsByClassName("spnDelete-ev")[0].classList.replace("spnDelete-ev", "spnDelete")
         }
+
         let divMain = document.createElement("div");
         divMain.setAttribute("class", " defaultBgcolor rounded pb-1");
         
@@ -113,7 +112,6 @@ class List{
             divWrapper.appendChild(add);
             divWrapper.appendChild(close);
             form.appendChild(divWrapper);
-            form.focus();
             newLi.appendChild(form);
             ul.appendChild(newLi);
             closeAlert(firstChild);
@@ -378,7 +376,7 @@ function renameBoard(e, input){
             "name": input.value,
             "token": token
         }      
-        input.classList.add("success");
+        
     
         var url = "https://tads-trello.herokuapp.com/api/trello/boards/rename"
         var xhttp = new XMLHttpRequest();
@@ -403,6 +401,12 @@ function renameBoard(e, input){
         setTimeout(function(){
             input.classList.replace("success-af", "success");
             input.blur();
+        }, 1000)
+
+    }else if(input.value == ""){
+        input.classList.replace("success", "error-af");
+        setTimeout(function(){
+            input.classList.replace("error-af", "success");
         }, 1000)
     }
 }
