@@ -87,7 +87,7 @@ class List{
             let add = new AddButton().init();
             
             
-            //o botao de fechar precisa remover o item que foi appendado na lista
+            //o botao de fechar precisa remover o item(form) que foi appendado na lista
             close.addEventListener("click", ()=>{
                 ul.removeChild(newLi);
                 showAlert(firstChild);
@@ -96,7 +96,16 @@ class List{
             
             //form -> textArea -> divWrapper -> botaoAdd -> botaoClose
             let form = new formCard().init();
-            form.getElementsByTagName("textarea")[0].focus();
+            form.getElementsByTagName("textarea")[0].addEventListener("keypress", function(event){
+                if(event.keyCode == 13 && this.value != ""){
+                    createCard(this.value, ul.id);
+                    form.reset();
+                    this.onfocus = function(){this.value=""};
+                    this.focus();
+                }else if(event.keyCode == 13){
+                    event.preventDefault();
+                }
+            })
 
             form.addEventListener("submit", function(e){
                 e.preventDefault();
@@ -172,7 +181,8 @@ class Card{
             openCard(this.cardName, this.cardId);
         }
         liCard.setAttribute("draggable", true);
-        liCard.ondragstart = function(){liCard.classList.add("drag"); div.classList.add("noShadow");  drag(event)};
+        liCard.ondragstart = function(){this.classList.add("drag"); div.classList.add("noShadow");  drag(event)};
+        liCard.ondragend =  function(){this.classList.remove("drag"); div.classList.remove("noShadow")}
         liCard.appendChild(div);
         return liCard;
     }
@@ -189,7 +199,6 @@ class formCard{
         let textArea = document.createElement("textarea");
         textArea.setAttribute("placeholder","Enter a title for this card...")
         textArea.classList.add("textCard")
-
         div.appendChild(textArea);
         form.appendChild(div);
 
@@ -222,7 +231,9 @@ class CloseButton{
     init(){
 
         let close = document.createElement("button");
+        close.setAttribute("type", "button");
         close.classList.add("close");
+
                
         let spn = document.createElement("span");
         spn.appendChild(document.createTextNode("x"));
@@ -514,7 +525,6 @@ function drop(e){
        if(e.target.tagName == 'UL'){
            try{
                e.target.appendChild(dragged);
-
                changeCard(dragged.id, e.target.id);
            }catch(err){
                console.log("Algo deu errado");
@@ -593,5 +603,4 @@ function changeCard(card_id, list_id){
     xhttp.open("PATCH", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(change));  
-    
 }

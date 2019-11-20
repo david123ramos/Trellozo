@@ -91,21 +91,27 @@ class Board {
     init(){
         /*Método que inicia um novo objeto do tipo Board */
         //Hierarquia: li-> divCard -> Span -> paragrafo -> texto
-        let listItem = document.createElement("li");
+        let listItem = document.createElement("li"); 
         listItem.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 ");
         listItem.setAttribute("id", this.id);
 
         let divCard = document.createElement("div");
         divCard.setAttribute("class", "card border-light h-100 board");
         divCard.setAttribute("id", "newBoard");
-        divCard.style.backgroundColor = this.color;
 
+        
         let spn = document.createElement("span");
-        spn.setAttribute("id", "spnNovoBoard");
         
         let paragrafo = document.createElement("p");
         
         let tituloBoard = document.createTextNode(this.name);
+
+        if(this.color != ""){
+            divCard.style.backgroundColor = this.color;
+        }else{
+            paragrafo.style.color = "white";
+            divCard.classList.add("back")
+        }
 
         paragrafo.appendChild(tituloBoard);
         spn.appendChild(paragrafo);
