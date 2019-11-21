@@ -131,20 +131,37 @@ class List{
         let div = document.createElement("div");
         div.setAttribute("class", " card title defaultBgcolor");
 
-        let spn = document.createElement("span");
-        
-        let p = document.createElement("p");
-        let text = document.createTextNode(this.name);
-        
-        p.appendChild(text);
-        spn.appendChild(p);
-        div.appendChild(spn);
+        // autocomplete="off"  onkeydown="renameBoard(event, this)" maxlength="15" class=" ml-4 font-weight-bold mt-2 btn-sup success
+       
+        let text = new NameList(this.name, this.listId).init();
+        div.appendChild(text);
         divMain.appendChild(div);
         divMain.appendChild(firstChild);
         divMain.insertBefore(ul, firstChild);
 
         li.appendChild(divMain);
         return li;
+    }
+}
+
+/*Classe que define o input que recebe o nome da lista */
+class NameList{
+    constructor(listName, listId){
+        this.listName =  listName;
+        this.listId = listId;
+    }
+    init(){
+        let text = document.createElement("input");
+        text.setAttribute("maxlength", 15);
+        text.setAttribute("autocomplete", "off");
+        text.setAttribute("autocorrect", "off");
+        text.setAttribute("class", "font-weight-bold mt-1 mr-1 list-name success");
+        text.value = this.listName;
+
+        text.addEventListener("keydown", (e)=>{
+            renameList(e, text, this.listId);
+        });
+        return text;
     }
 }
 
@@ -393,8 +410,7 @@ function renameBoard(e, input){
             "name": input.value,
             "token": token
         }      
-        
-    
+
         var url = "https://tads-trello.herokuapp.com/api/trello/boards/rename"
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -427,6 +443,48 @@ function renameBoard(e, input){
         }, 1000)
     }
 }
+
+function renameList(event, input, listId){
+    if(event.keyCode == 13 && input.value != ""){
+        
+        //{ "list_id": "2", "name": "new list 2.3", "token": "U6nmRB489Wa7UDVJ7bfxY3" }
+        console.log(input)
+
+        let list = {
+            "list_id": listId,
+            "name": input.value,
+            "token": token
+        }      
+
+        var url = "https://tads-trello.herokuapp.com/api/trello/lists/rename"
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                input.classList.replace("success", "success-af");
+
+            }else if(this.readyState == 4 && this.status == 400){
+
+            }
+        }
+    
+        xhttp.open("PATCH", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(list));  
+        
+        setTimeout(function(){
+            input.classList.replace("success-af", "success");
+            input.blur();
+        }, 1000)
+
+    }else if(input.value == ""){
+        input.classList.replace("success", "error-af");
+        setTimeout(function(){
+            input.classList.replace("error-af", "success");
+        }, 1000)
+    }
+}
+
 
 function getLists(){
 

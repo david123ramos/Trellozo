@@ -28,6 +28,9 @@ ul{
     font-weight: bold ;
     border: none;
 }
+.list-name{
+    border-style: none;
+}
 #homeIconDiv{
     border-radius: 5px;
     background-color:rgba(255, 255, 255, 0.5);
