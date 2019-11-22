@@ -155,7 +155,7 @@ class NameList{
         text.setAttribute("maxlength", 15);
         text.setAttribute("autocomplete", "off");
         text.setAttribute("autocorrect", "off");
-        text.setAttribute("class", "font-weight-bold mt-1 mr-1 list-name success");
+        text.setAttribute("class", "font-weight-bold mt-1 mr-1 list-name success mw-50");
         text.value = this.listName;
 
         text.addEventListener("keydown", (e)=>{
@@ -191,9 +191,10 @@ class Card{
         let liCard = document.createElement("li");
         div.classList.add("divTextArea");
         liCard.setAttribute("id", this.cardId);
-        //data-toggle="modal" data-target="#exampleModal"
+
         liCard.setAttribute("data-toggle", "modal");
         liCard.setAttribute("data-target", "#exampleModal");
+        
         liCard.onclick = ()=>{
             openCard(this.cardName, this.cardId);
         }
@@ -202,6 +203,10 @@ class Card{
         liCard.ondragend =  function(){this.classList.remove("drag"); div.classList.remove("noShadow")}
         liCard.appendChild(div);
         return liCard;
+    }
+
+    set setName(name){
+        this.cardName = name;
     }
 }
 
@@ -484,7 +489,48 @@ function renameList(event, input, listId){
         }, 1000)
     }
 }
+function renameCard(cardId, input){
+    
+    if(input.value != ""){
+    
+        let card = {
+            "token": token,
+            "card_id": cardId,
+            "name": input.value
+        }      
 
+        var url = "https://tads-trello.herokuapp.com/api/trello/cards/rename"
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                input.classList.replace("success", "success-af");
+                console.log( document.getElementById(cardId).firstElementChild)
+                document.getElementById(cardId).firstElementChild.innerHTML = input.value;
+
+            }else if(this.readyState == 4 && this.status == 400){
+
+            }
+        }
+
+        xhttp.open("PATCH", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(card));  
+        
+        setTimeout(function(){
+            input.classList.replace("success-af", "success");
+            input.blur();
+        }, 1000)
+
+    }else{
+        input.classList.replace("success", "error-af");
+        setTimeout(function(){
+            input.classList.replace("error-af", "success");
+        }, 1000)
+    }
+
+}
 
 function getLists(){
 
@@ -591,11 +637,23 @@ function drop(e){
        }
     
 }
+var title = document.getElementById("exampleModal").getElementsByTagName("textarea")[0];
+title.addEventListener("keydown", function(){
+    renameCard()
+})
+
 function openCard(cardName, cardId){
-    let title = document.getElementById("exampleModal").getElementsByTagName("textarea")[0];
+    
+    
     title.style.width = cardName.length+"rem";
     title.value = cardName;
-
+    
+    if(event.keyCode == 13){
+       renameCard(cardId, title);
+    }
+    
+    
+    
     document.getElementById("exampleModal").getElementsByTagName("textarea")[1].onkeydown  = function(event){
         
         if(event.keyCode == 13 && this.value != ""){
@@ -611,6 +669,7 @@ function openCard(cardName, cardId){
             event.preventDefault();
         }
     }
+   
 }
 
 function deleteCard(e){
