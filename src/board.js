@@ -20,7 +20,9 @@ var listName = document.getElementById("listName");
 
 document.getElementById("nav-header").style.backgroundColor = boardColor;
 document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
-document.getElementById("boardName").value = boardName;
+var boardNameInput = document.getElementById("boardName");
+boardNameInput.value = boardName;
+boardNameInput.style.width = boardName.length+"rem"
 document.getElementsByTagName("title")[0].innerHTML = boardName + " | Trellozo";
 getUserName();
 getLists();
@@ -196,7 +198,21 @@ class Card{
         liCard.setAttribute("data-target", "#exampleModal");
         
         liCard.onclick = ()=>{
-            openCard(this.cardName, this.cardId);
+            var name =  this.cardName;
+            var cardStored = sessionStorage.getItem("card") ? JSON.parse(sessionStorage.getItem("card")) : null;
+            
+            if(cardStored != null){
+                if(cardStored.id == this.cardId){
+                    name = cardStored.name;
+                }
+            }
+            console.log(name)
+            let cardInfo = {
+                "name": name,
+                "id": this.cardId
+            }
+            sessionStorage.setItem("card", JSON.stringify(cardInfo));
+            openCard();
         }
         liCard.setAttribute("draggable", true);
         liCard.ondragstart = function(){this.classList.add("drag"); div.classList.add("noShadow");  drag(event)};
@@ -489,13 +505,15 @@ function renameList(event, input, listId){
         }, 1000)
     }
 }
-function renameCard(cardId, input){
+function renameCard(event, input){
     
-    if(input.value != ""){
-    
+    if(event.keyCode == 13 && input.value != ""){
+        event.preventDefault();
+        var cardClicked = JSON.parse(sessionStorage.getItem("card"));
+        
         let card = {
             "token": token,
-            "card_id": cardId,
+            "card_id": cardClicked.id,
             "name": input.value
         }      
 
@@ -506,8 +524,11 @@ function renameCard(cardId, input){
             if (this.readyState == 4 && this.status == 200) {
 
                 input.classList.replace("success", "success-af");
-                console.log( document.getElementById(cardId).firstElementChild)
-                document.getElementById(cardId).firstElementChild.innerHTML = input.value;
+                console.log( document.getElementById(cardClicked.id).firstElementChild)
+                document.getElementById(cardClicked.id).firstElementChild.innerHTML = input.value;
+                cardClicked.name = input.value;
+                sessionStorage.setItem("card", JSON.stringify(cardClicked));
+
 
             }else if(this.readyState == 4 && this.status == 400){
 
@@ -523,7 +544,7 @@ function renameCard(cardId, input){
             input.blur();
         }, 1000)
 
-    }else{
+    }else if (input.value == ""){
         input.classList.replace("success", "error-af");
         setTimeout(function(){
             input.classList.replace("error-af", "success");
@@ -637,23 +658,31 @@ function drop(e){
        }
     
 }
-var title = document.getElementById("exampleModal").getElementsByTagName("textarea")[0];
-title.addEventListener("keydown", function(){
-    renameCard()
-})
+ var title = document.getElementById("exampleModal").getElementsByTagName("textarea")[0];
+ var activeKeydown =  false; 
 
-function openCard(cardName, cardId){
+
+ //Função que é chamada quando o card é clicado
+function openCard(){
+       
+        var card = JSON.parse(sessionStorage.getItem("card"));
+
+        if(!activeKeydown){
+            activeKeydown = true;
+            title.addEventListener("keydown", function (e) {
+                renameCard(e, this);
+            });
+        }
+            
+        title.removeEventListener("keydown", function(){ activeKeydown = false;});
+           
+       
+
     
-    
-    title.style.width = cardName.length+"rem";
-    title.value = cardName;
-    
-    if(event.keyCode == 13){
-       renameCard(cardId, title);
-    }
-    
-    
-    
+
+    title.style.width = card.name.length+"rem";
+    title.value = card.name;
+
     document.getElementById("exampleModal").getElementsByTagName("textarea")[1].onkeydown  = function(event){
         
         if(event.keyCode == 13 && this.value != ""){
