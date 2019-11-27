@@ -107,6 +107,29 @@
         </div>
     </div>
 
+    <!--Modal usado para chamar a exclusão das listas-->
+    <div class="modal fade " id="modalExcluirLista" tabindex="-1" role="dialog" aria-labelledby="excluirLista" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content defaultBgcolor">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Tem certeza que deseja excluir?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    Se você apagar essa lista,  automaticamente os cards dentro dela serão excluídos.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="exitList" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                    <button type="button" onclick="excludeList()" class="btn btn-danger">Sim</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+    <!--criar uma nova lista-->
     <div class="container-fluid mh-100" id="mainDiv">
         <ul class="row list-group-horizontal px-2 w-100 m-0" id="fatherRow">
             <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 ">
@@ -194,6 +217,8 @@
         </div>
     </div>
 
+
+    <!--Modal que dispara quando o usuário tenta excluir um card-->
     <div class="modal fade" id="modalExclude" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

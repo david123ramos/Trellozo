@@ -78,6 +78,7 @@ class List{
 
         let divMain = document.createElement("div");
         divMain.setAttribute("class", " defaultBgcolor rounded pb-1");
+
         
         let firstChild = document.createElement("div");
         firstChild.appendChild(new BtnIsertCard().init());
@@ -131,12 +132,32 @@ class List{
 
 
         let div = document.createElement("div");
-        div.setAttribute("class", " card title defaultBgcolor");
+        div.setAttribute("class", "title defaultBgcolor d-flex justify-content-between");
 
-        // autocomplete="off"  onkeydown="renameBoard(event, this)" maxlength="15" class=" ml-4 font-weight-bold mt-2 btn-sup success
-       
+        //nome da lista
         let text = new NameList(this.name, this.listId).init();
+        
+        //icone "..." que aparece quando se coloca o mouse em cima da lista
+        let buttonDelete = document.createElement("button");
+        let iconDots = document.createElement("img");
+        buttonDelete.setAttribute("class", "more-after btn p-0");
+        buttonDelete.setAttribute("data-toggle", "modal");
+        buttonDelete.setAttribute("data-target", "#modalExcluirLista");
+        buttonDelete.onclick = ()=>{
+           sessionStorage.setItem("list", this.listId);
+        }
+        
+        iconDots.setAttribute("src", "img/deleteList.png");
+        buttonDelete.appendChild(iconDots);
+        divMain.onmouseover = function(){
+            buttonDelete.classList.remove("more-after");   
+        }
+        divMain.onmouseleave = function(){
+            buttonDelete.classList.add("more-after");
+        }
+
         div.appendChild(text);
+        div.appendChild(buttonDelete);
         divMain.appendChild(div);
         divMain.appendChild(firstChild);
         divMain.insertBefore(ul, firstChild);
@@ -204,6 +225,7 @@ class Card{
             if(cardStored != null){
                 if(cardStored.id == this.cardId){
                     name = cardStored.name;
+                    
                 }
             }
             console.log(name)
@@ -622,6 +644,37 @@ function excludeBoard(){
     xhttp.open("DELETE", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(b));  
+    
+}
+function excludeList(){
+
+
+    var list = {
+        "list_id" : sessionStorage.getItem("list"),
+        "token" : token
+    }
+    
+    var url = "https://tads-trello.herokuapp.com/api/trello/lists/delete"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+
+   
+            let listRemoved = document.getElementById(sessionStorage.getItem("list"));
+            let parentNode = listRemoved.parentNode.parentNode;
+            fatherRow.removeChild(parentNode);
+            document.getElementById("exitList").click();
+            
+            
+
+        }else if(this.readyState == 4 && this.status == 400){
+
+        }
+    }
+
+    xhttp.open("DELETE", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(list));  
     
 }
 
