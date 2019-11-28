@@ -10,7 +10,6 @@ var fatherRow = document.getElementById("fatherRow");
 var acountButton = document.getElementsByClassName("spnRoundedButton").item(0);
 
 
-
 //Forms e divs
 var formCreateList = document.getElementById("formCreateList");
 var divCreateList = document.getElementById("formList");
@@ -29,6 +28,7 @@ getLists();
 
 window.onload = function () {
     let colorButtons = document.querySelectorAll(".btn-color");
+    let tagButtons = Array.from(document.querySelectorAll(".tag"));
     let aux = Array.from(colorButtons);
 
     aux.map(function (colorButton) {
@@ -40,6 +40,14 @@ window.onload = function () {
             ax.color = color;
             sessionStorage.setItem("board", JSON.stringify(ax));
             changeBodyColor(color);
+        });
+    });
+
+    //escutar a adição de tags
+    tagButtons.map(function(tagButton){
+        tagButton.addEventListener("click", function(e){
+            e.preventDefault();
+            addTag(this);
         });
     });
 
@@ -336,9 +344,6 @@ formCreateList.addEventListener("submit", function (e) {
     xhttp.send(JSON.stringify(board));
 
 });
-
-
-
 
 //.collapse('toggle') alterna a vizualizção da classe collapse que está em uma div
 //TODO : não usar jQuery
@@ -799,4 +804,35 @@ function changeCard(card_id, list_id) {
     xhttp.open("PATCH", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(change));
+}
+
+function addTag(button){
+    let tagList = document.getElementById("tags");
+    let li = document.createElement("li");
+    // li.appendChild(button);
+   
+    let cardID = JSON.parse(sessionStorage.getItem("card")).id;
+    console.log(cardID)
+    var cardTag = {
+        "card_id": cardID,
+        "tag_id": button.id,
+        "token" : token,
+    }
+
+    console.log(JSON.stringify(cardTag))
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/addtag"
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            tagList.appendChild(li);
+        } else if (this.readyState == 4 && this.status == 400) {
+
+        }
+    }
+
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(cardTag));   
 }

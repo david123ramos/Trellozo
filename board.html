@@ -191,20 +191,20 @@
                         </div>
                         <div class="mt-1">
                             <label>Tags</label>
-                            <ul id="cardTags" class="list-inline">
-                                <li class="list-inline-item m-1">
-                                    <button class="btn bg-success tag"></button>
-                                </li>
-                                <li class="list-inline-item m-1">
-                                    <button class="btn bg-warning"></button>
-                                </li>
-                                <li class="list-inline-item m-1">
-                                    <button class="btn bg-danger"></button>
-                                </li>
-                                <li class="list-inline-item m-1">
-                                    <button class="btn bg-secondary"></button>
-                                </li>
-                            </ul>
+                            <ul id="tags"></ul>
+                            <div class="dropdown dropright">
+                                <button class="btn border " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  +
+                                </button>
+                                <table class="dropdown-menu p-0" aria-labelledby="dropdownMenu2">
+                                    <tr class="d-flex  ">
+                                        <td class="dropdown-item p-0 m-1"><button id="tag1" class="btn bg-primary tag" type="button"></button></td>
+                                        <td class="dropdown-item p-0 m-1"><button id="tag2" class="btn bg-success tag" type="button"></button></td>
+                                        <td class="dropdown-item p-0 m-1"><button id="tag3" class="btn bg-warning tag" type="button"></button></td>
+                                        <td class="dropdown-item p-0 m-1"><button id="tag4" class="btn bg-danger tag" type="button"></button></td>
+                                    </tr>
+                                </table>
+                              </div>
                         </div>
 
                     </div>
