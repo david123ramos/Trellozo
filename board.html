@@ -118,7 +118,7 @@
                         </button>
                 </div>
                 <div class="modal-body">
-                    Se você apagar essa lista,  automaticamente os cards dentro dela serão excluídos.
+                    Se você apagar essa lista, automaticamente os cards dentro dela serão excluídos.
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="exitList" class="btn btn-secondary" data-dismiss="modal">Não</button>
@@ -127,7 +127,7 @@
             </div>
         </div>
     </div>
-  
+
 
     <!--criar uma nova lista-->
     <div class="container-fluid mh-100" id="mainDiv">
@@ -154,11 +154,11 @@
     </div>
 
     <!-- Modal que é aberto quando o card é clicado -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <textarea class="modal-title inputNameCard font-weight-bold success"  id="exampleModalLabel"></textarea>
+                    <textarea class="modal-title inputNameCard font-weight-bold success" id="exampleModalLabel"></textarea>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -191,25 +191,40 @@
                         </div>
                         <div class="mt-1">
                             <label>Tags</label>
-                            <ul id="tags"></ul>
-                            <div class="dropdown dropright">
-                                <button class="btn border " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  +
-                                </button>
-                                <table class="dropdown-menu p-0" aria-labelledby="dropdownMenu2">
-                                    <tr class="d-flex  ">
-                                        <td class="dropdown-item p-0 m-1"><button id="tag1" class="btn bg-primary tag" type="button"></button></td>
-                                        <td class="dropdown-item p-0 m-1"><button id="tag2" class="btn bg-success tag" type="button"></button></td>
-                                        <td class="dropdown-item p-0 m-1"><button id="tag3" class="btn bg-warning tag" type="button"></button></td>
-                                        <td class="dropdown-item p-0 m-1"><button id="tag4" class="btn bg-danger tag" type="button"></button></td>
-                                    </tr>
-                                </table>
-                              </div>
+                            <ul id="tags" class="list-group list-group-horizontal">
+
+                                <li id="firstChildTag">
+                                    <div class="dropdown dropright">
+                                        <button class="btn border " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            +
+                                        </button>
+                                        <table class="dropdown-menu p-0" aria-labelledby="dropdownMenu2">
+                                            <tr class="d-flex  ">
+                                                <td class="dropdown-item p-0 m-1">
+                                                    <button id="2" class="btn bg-primary tag" type="button"></button>
+                                                </td>
+                                                <td class="dropdown-item p-0 m-1">
+                                                    <button id="12" class="btn bg-success tag" type="button"></button>
+                                                </td>
+                                                <td class="dropdown-item p-0 m-1">
+                                                    <button id="32" class="btn bg-warning tag" type="button"></button>
+                                                </td>
+                                                <td class="dropdown-item p-0 m-1">
+                                                    <button id="22" class="btn bg-danger tag" type="button"></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                </li>
+
+                            </ul>
+
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#modalExclude" data-dismiss="modal">Excluir card</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExclude" data-dismiss="modal">Excluir card</button>
                         <button type="submit" class="btn btn-secondary">Salvar mudanças</button>
                     </div>
                 </form>

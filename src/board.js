@@ -224,7 +224,7 @@ class Card {
         liCard.setAttribute("id", this.cardId);
 
         liCard.setAttribute("data-toggle", "modal");
-        liCard.setAttribute("data-target", "#exampleModal");
+        liCard.setAttribute("data-target", "#cardModal");
 
         liCard.onclick = () => {
             var name = this.cardName;
@@ -807,12 +807,30 @@ function changeCard(card_id, list_id) {
 }
 
 function addTag(button){
+    var colorTag;
+
+    if(button.id == 2){
+        colorTag = "btn bg-primary";
+    }else if(button.id == 12){
+        colorTag = "btn bg-success";
+    }else if(button.id == 32){
+        colorTag = "btn bg-warning";
+    }else{
+        colorTag = "btn bg-danger";
+    }
+
     let tagList = document.getElementById("tags");
+    
     let li = document.createElement("li");
-    // li.appendChild(button);
+    li.setAttribute("class", "m-1")
+    
+    let tag = document.createElement("button");
+    tag.setAttribute("class", "tag w-100 h-100 "+colorTag);
+    tag.onclick = function(e){e.preventDefault()}
+    
+    li.appendChild(tag);
    
     let cardID = JSON.parse(sessionStorage.getItem("card")).id;
-    console.log(cardID)
     var cardTag = {
         "card_id": cardID,
         "tag_id": button.id,
@@ -826,7 +844,9 @@ function addTag(button){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            tagList.appendChild(li);
+            tagList.insertBefore(li, document.getElementById("firstChildTag"));
+            button.disabled  =  true;
+           
         } else if (this.readyState == 4 && this.status == 400) {
 
         }
