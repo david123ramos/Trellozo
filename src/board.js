@@ -5,6 +5,9 @@ const boardName = JSON.parse(sessionStorage.getItem("board")).name;
 const token = sessionStorage.getItem("token");
 const data = dataAtualFormatada();
 
+//flag que indica se a data do card foi alterada
+var dateChange = false;
+
 var firstChild = document.getElementById("firstChild");
 var fatherRow = document.getElementById("fatherRow");
 var acountButton = document.getElementsByClassName("spnRoundedButton").item(0);
@@ -50,7 +53,6 @@ window.onload = function () {
             addTag(this);
         });
     });
-
 }
 
 
@@ -93,6 +95,7 @@ class List {
 
         firstChild.addEventListener("click", function () {
             let newLi = document.createElement("li");
+            newLi.setAttribute("draggable","false")
 
             let close = new CloseButton().init();
             let add = new AddButton().init();
@@ -111,8 +114,7 @@ class List {
                 if (event.keyCode == 13 && this.value != "") {
                     createCard(this.value, ul.id);
                     form.reset();
-                    this.onfocus = function () { this.value = "" };
-                    this.focus();
+                    this.blur();
                 } else if (event.keyCode == 13) {
                     event.preventDefault();
                 }
@@ -210,50 +212,51 @@ class BtnIsertCard {
 
 /*Classe que define um card */
 class Card {
-    constructor(cardName, cardId) {
+    constructor(cardName, cardId, date) {
         this.cardName = cardName;
         this.cardId = cardId;
+        this.date = date;
     }
 
     init() {
         let div = document.createElement("div");
-        div.setAttribute("class", "card p-2 textCardSubmited")
-        div.appendChild(document.createTextNode(this.cardName));
+        div.setAttribute("class", "card p-2 textCardSubmited divTextArea");
+
+        let ulTag = document.createElement("ul");
+        ulTag.setAttribute("class","list-inline");
+        div.appendChild(ulTag);
+        
+        let spnNome = document.createElement("span");
+        spnNome.innerText = this.cardName;
+        div.appendChild(spnNome);
         let liCard = document.createElement("li");
-        div.classList.add("divTextArea");
         liCard.setAttribute("id", this.cardId);
 
         liCard.setAttribute("data-toggle", "modal");
         liCard.setAttribute("data-target", "#cardModal");
 
         liCard.onclick = () => {
-            var name = this.cardName;
-            console.log(name)
-            var cardStored = sessionStorage.getItem("card") ? JSON.parse(sessionStorage.getItem("card")) : null;
-
-            if (cardStored != null) {
-                if (cardStored.id == this.cardId) {
-                    name = cardStored.name;
-                    this.cardName = name;
-                }
-            }
- 
+            var name = document.getElementById(this.cardId).firstElementChild.querySelector("span").innerText;
             let cardInfo = {
                 "name": name,
-                "id": this.cardId
+                "id": this.cardId,
+                "date": this.date
             }
             sessionStorage.setItem("card", JSON.stringify(cardInfo));
+            //limpa o modal do card antes de ele ser aberto
+            clearModalCard();
             openCard();
         }
+        
         liCard.setAttribute("draggable", true);
         liCard.ondragstart = function () { this.classList.add("drag"); div.classList.add("noShadow"); drag(event) };
         liCard.ondragend = function () { this.classList.remove("drag"); div.classList.remove("noShadow") }
+        let date = document.createElement("div");
+        date.setAttribute("date", this.date);
+
+        div.appendChild(date);
         liCard.appendChild(div);
         return liCard;
-    }
-
-    set setName(name) {
-        this.cardName = name;
     }
 }
 
@@ -326,6 +329,11 @@ formCreateList.addEventListener("submit", function (e) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
+            //apendando a nova lista ao sessionStorage
+            let arrList = JSON.parse(sessionStorage.getItem("lists"))
+            arrList.push(obj);
+            sessionStorage.setItem("lists", JSON.stringify(arrList));
+
             let newList = new List(obj.name, obj.id);
             fatherRow.insertBefore(newList.init(), firstChild);
 
@@ -337,7 +345,6 @@ formCreateList.addEventListener("submit", function (e) {
         }
     }
 
-    console.log(JSON.stringify(board));
 
     xhttp.open("POST", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
@@ -365,7 +372,6 @@ function changeBodyColor(color) {
         "token": token
     }
     var url = " https://tads-trello.herokuapp.com/api/trello/boards/newcolor";
-    console.log(url);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -380,13 +386,12 @@ function changeBodyColor(color) {
 //usada para mudar a letra que aparece no botão de perfil nas páginas
 function getUserName() {
     var url = "https://tads-trello.herokuapp.com/api/trello/users/" + token;
-    console.log(url);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
-            console.log(obj.name);
             acountButton.innerHTML = obj.name.charAt(0);
+            document.getElementById("completeUserName").innerText = `(${obj.name})`
 
         }
     }
@@ -408,7 +413,11 @@ function showAlert(someElement) {
 }
 
 function mainPage() {
-    return window.location.href = "main.html"
+    return window.location.href = "main.html";
+}
+function logout(){
+    sessionStorage.clear();
+    return window.location.href = "index.html";
 }
 
 function createCard(nameCard, listId) {
@@ -423,10 +432,11 @@ function createCard(nameCard, listId) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
-            let card = new Card(obj.name, obj.id).init();
+            let card = new Card(obj.name, obj.id, obj.data).init();
             let l = document.getElementById(listId);
-            let sizeList = l.querySelectorAll("li").length
-            l.insertBefore(card, l.childNodes[sizeList - 1]);
+            //precisamos diferenciar os li's. Os li's que possuem id são os que queremos
+            let sizeList = l.querySelectorAll("li[id]").length
+            l.insertBefore(card, l.childNodes[sizeList]);
 
         } else if (this.readyState == 4 && this.status == 400) {
 
@@ -496,9 +506,6 @@ function renameBoard(e, input) {
 function renameList(event, input, listId) {
     if (event.keyCode == 13 && input.value != "") {
 
-        //{ "list_id": "2", "name": "new list 2.3", "token": "U6nmRB489Wa7UDVJ7bfxY3" }
-        console.log(input)
-
         let list = {
             "list_id": listId,
             "name": input.value,
@@ -511,6 +518,15 @@ function renameList(event, input, listId) {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 input.classList.replace("success", "success-af");
+
+                //é necessário mudar o nome da lista também no sessionStorage
+                var listsSession = JSON.parse(sessionStorage.getItem("lists"));
+                listsSession.map(function (list){
+                    if(list.id == listId){
+                        list.name = input.value;
+                    }
+                });
+                sessionStorage.setItem("lists", JSON.stringify(listsSession));
 
             } else if (this.readyState == 4 && this.status == 400) {
 
@@ -552,8 +568,7 @@ function renameCard(event, input) {
             if (this.readyState == 4 && this.status == 200) {
 
                 input.classList.replace("success", "success-af");
-                console.log(document.getElementById(cardClicked.id).firstElementChild)
-                document.getElementById(cardClicked.id).firstElementChild.innerHTML = input.value;
+                document.getElementById(cardClicked.id).querySelector("span").innerText = input.value;
                 cardClicked.name = input.value;
                 sessionStorage.setItem("card", JSON.stringify(cardClicked));
 
@@ -589,7 +604,7 @@ function getLists() {
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
             obj.forEach(printLists);
-
+            sessionStorage.setItem("lists", this.responseText);
 
         } else if (this.readyState == 4 && this.status == 400) {
 
@@ -615,7 +630,8 @@ function getCards(listId) {
             var obj = JSON.parse(this.responseText);
             let l = document.getElementById(listId);
             for (let i in obj) {
-                l.appendChild(new Card(obj[i].name, obj[i].id).init());
+                l.appendChild(new Card(obj[i].name, obj[i].id, obj[i].data).init());
+                cardTags(obj[i].id, addTagOnCard);
             }
 
         } else if (this.readyState == 4 && this.status == 400) {
@@ -670,6 +686,22 @@ function excludeList() {
             let parentNode = listRemoved.parentNode.parentNode;
             fatherRow.removeChild(parentNode);
             document.getElementById("exitList").click();
+            var index;
+            //quando uma lista for removida preciso apagá-la do sessionStorage tbm
+            var arrList = JSON.parse(sessionStorage.getItem("lists"));
+            
+            arrList.map(function(i){
+                if(i.id == sessionStorage.getItem("list")){
+                    index = arrList.indexOf(i);
+                }
+            });
+
+            arrList.splice(index, 1);
+            //setando o novo array ao sessionStorage
+            sessionStorage.setItem("lists", JSON.stringify(arrList));
+
+            //remove o id da ultima lista que foi clicada para a exclusão
+            sessionStorage.removeItem("list")
 
 
 
@@ -717,14 +749,49 @@ function drop(e) {
     }
 
 }
-var title = document.getElementById("exampleModal").getElementsByTagName("textarea")[0];
+
+//Função que é chamada antes de um card ser aberto
+function clearModalCard(){
+    
+    //remove os comentários
+    var ul = document.getElementById("commentList")
+    ul.innerHTML = "";
+
+
+    //remove tags
+    var tags = document.getElementById("tags");
+    var childTag = tags.firstElementChild;
+    
+    while(childTag){
+        if(childTag.getAttribute("id") != "firstChildTag" ){
+            tags.removeChild(childTag);
+            childTag = tags.firstElementChild;
+        }else{
+            break;
+        }
+    }
+
+    //remove opcões da select tag
+    var opts = document.getElementById("selectionChange");
+    var childOpt = opts.lastElementChild;
+    while(childOpt){
+        if(childOpt.getAttribute("value") != "default"){
+            opts.removeChild(childOpt);
+            childOpt = opts.lastElementChild;
+        }else{
+            break;
+        }
+    }
+
+}
+
+var title = document.getElementById("cardModal").getElementsByTagName("textarea")[0];
 var activeKeydown = false;
-
-
 //Função que é chamada quando o card é clicado
 function openCard() {
 
     var card = JSON.parse(sessionStorage.getItem("card"));
+    getCardInfo(card.id)
 
     if (!activeKeydown) {
         activeKeydown = true;
@@ -738,24 +805,186 @@ function openCard() {
     title.style.width = card.name.length + "rem";
     title.value = card.name;
 
-    document.getElementById("exampleModal").getElementsByTagName("textarea")[1].onkeydown = function (event) {
-
+    document.getElementById("cardModal").getElementsByTagName("textarea")[1].onkeydown = function (event) {
         if (event.keyCode == 13 && this.value != "") {
-            let li = document.createElement("li");
-            li.setAttribute("class", "list-group-item")
-            let div = document.createElement("div");
-            div.appendChild(document.createTextNode(this.value));
-            li.appendChild(div);
-            document.getElementById("commentList").appendChild(li);
-            this.value = '';
-            this.blur();
+           addComment(this, this.value, card.id)
         } else if (event.keyCode == 13) {
             event.preventDefault();
         }
     }
 
+} 
+
+//appenda o comentário no modal
+function appendComment(comment){
+
+    let li = document.createElement("li");
+    li.setAttribute("class", "list-group-item")
+    let div = document.createElement("div");
+    div.appendChild(document.createTextNode(comment));
+    li.appendChild(div);
+    document.getElementById("commentList").appendChild(li);
+
+}
+//apenda uma tag no modal
+function appendTag(id, colorTag){
+
+    let tagList = document.getElementById("tags");
+    
+    let li = document.createElement("li");
+    li.setAttribute("class", "m-1")
+    li.setAttribute("id", id);
+    
+    
+    let tag = document.createElement("button");
+
+    tag.setAttribute("class", "tag w-100 h-100 "+colorTag);
+   
+    tag.onclick = function(e){e.preventDefault()}
+    
+    li.appendChild(tag);
+    tagList.insertBefore(li, document.getElementById("firstChildTag"));
 }
 
+
+function addComment(textarea, comment, card_id){
+    
+    appendComment(comment);   
+    textarea.value = '';
+    textarea.blur();
+
+    //envia o comentário pro server
+    let comment4Send = {
+        "card_id":card_id,
+        "comment": comment,
+        "token": token
+    }
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/addcomment"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+         
+        } else if (this.readyState == 4 && this.status == 400) {
+
+        }
+    }
+
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(comment4Send));
+}
+
+
+//recupera os comentários de um card
+function cardComments (card_id) {
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/"+token+"/"+card_id+"/comments"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          
+          (JSON.parse(this.responseText)).map(function(comment){
+            appendComment(comment.comment)
+          })
+
+        } else if (this.readyState == 4 && this.status == 400) {
+
+        }
+    }
+
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(url));
+}
+
+//recupera as tags de um card. O parâmetro função indica qual função será executada quando ele retornar o array de tags
+function cardTags (card_id, funcao) {
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/"+token+"/"+card_id+"/tags"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+
+            if(JSON.parse(this.responseText).length != 0){
+                
+                (JSON.parse(this.responseText)).map(function(tag){
+                    let colorTag = getColorFromId(tag.id);
+
+                    if(funcao == addTagOnCard){
+                        funcao(card_id, colorTag);                        
+                    }else{
+                        funcao(tag.id, colorTag);
+                    }
+                })
+            }
+
+        } else if (this.readyState == 4 && this.status == 400) {
+
+        }
+    }
+
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(url));
+}
+//Função que põe as listas na tag selection com execeção da lista do card que foi clicado
+function getListsFromSession(card_clicked){
+    //array de listas
+    var lists = JSON.parse(sessionStorage.getItem("lists"));
+    //lista que deve ser excluída do selection
+    var listExc = card_clicked.parentNode
+    var selectionTag = document.getElementById("selectionChange");
+    
+    lists.map(function (list){
+        if(list.id != listExc.id){
+            var opt =document.createElement("option");
+            opt.innerText = list.name;
+            opt.setAttribute("value" , list.id);
+            selectionTag.appendChild(opt);
+        }
+    });
+
+
+}
+
+//função usada para recuperar todas as informações de um card quando o mesmo é aberto
+function getCardInfo(card_id){
+    cardComments(card_id);
+    cardTags(card_id, appendTag);
+    getListsFromSession(document.getElementById(card_id));
+    var date  = document.getElementById(card_id).querySelector('div[date]').getAttribute("date");
+    var dateInput =  document.querySelector('input[type="date"]')
+    date = date.split("/").reverse().join().replace(/,/g, '-');
+    dateInput.value = date;
+}
+
+function deleteCardFromModal(){
+
+    let cardClicked = JSON.parse(sessionStorage.getItem("card"));
+
+    let card = {
+        "card_id":cardClicked.id,
+        "token": token
+    }
+    let card2bDeleted = document.getElementById(cardClicked.id);
+    var url = " https://tads-trello.herokuapp.com/api/trello/cards/delete"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+         card2bDeleted.parentNode.removeChild(card2bDeleted);
+         document.getElementById("cardModal").click();
+         sessionStorage.removeItem("card");
+        } else if (this.readyState == 4 && this.status == 400) {
+
+        }
+    }
+
+    xhttp.open("DELETE", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(card));
+}
+
+
+//função de deleção do card a partir do drag and drop
 function deleteCard(e) {
     e.preventDefault();
     let element = e.dataTransfer.getData("element");
@@ -784,6 +1013,61 @@ function deleteCard(e) {
 
 }
 
+//função que altera a flag que indica que a data foi mudada
+function dateChanged(){
+    dateChange = true;
+}
+
+//form que é submetido quando as mudanças dentro do card são salvas
+document.getElementById("changesOnCardForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var card = JSON.parse(sessionStorage.getItem("card"));
+    card = document.getElementById(card.id);
+    var list = (document.getElementById(card.id)).parentNode;
+    var select = this.getElementsByTagName("select")[0];
+    var date = this.getElementsByTagName("input")[0];
+
+
+    if(select.options[select.selectedIndex].value != "default" ){
+        changeCard(card.id, select.options[select.selectedIndex].value);
+        list.removeChild(card);
+        document.getElementById(select.options[select.selectedIndex].value).appendChild(card);
+    }
+
+    if(dateChange){
+        let newDate = (date.value.split("-").reverse()).join().replace(/,/g , '/');
+        changeDate(newDate, card.id);
+        card.querySelector('div[date]').setAttribute("date", newDate);
+
+    }
+    document.getElementById("cardModal").click();
+
+});
+
+//função usada para requisitar a mudança da data
+function changeDate(date, card_id){
+    let newDate = {
+        "token": token,
+        "card_id": card_id,
+        "data": date
+    }
+
+    var url =  "https://tads-trello.herokuapp.com/api/trello/cards/newdata"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+        } else if (this.readyState == 4 && this.status == 400) {
+
+        }
+    }
+
+    xhttp.open("PATCH", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(newDate));
+}
+
+
+//função usada para mudar o card de lista
 function changeCard(card_id, list_id) {
     let change = {
         "token": token,
@@ -806,30 +1090,37 @@ function changeCard(card_id, list_id) {
     xhttp.send(JSON.stringify(change));
 }
 
-function addTag(button){
+
+//retorna  a cor normalizada bootstrap dada o id da tag
+function getColorFromId(button_id){
     var colorTag;
 
-    if(button.id == 2){
+    if(button_id == 2){
         colorTag = "btn bg-primary";
-    }else if(button.id == 12){
+    }else if(button_id == 12){
         colorTag = "btn bg-success";
-    }else if(button.id == 32){
+    }else if(button_id == 32){
         colorTag = "btn bg-warning";
     }else{
         colorTag = "btn bg-danger";
     }
+    return colorTag;
+}
 
-    let tagList = document.getElementById("tags");
-    
+
+//adiciona as tags nos cards
+function addTagOnCard(card_id, color){
+    let div = document.createElement("div");
+    div.setAttribute("class", "card border-0 "+color);
     let li = document.createElement("li");
-    li.setAttribute("class", "m-1")
-    
-    let tag = document.createElement("button");
-    tag.setAttribute("class", "tag w-100 h-100 "+colorTag);
-    tag.onclick = function(e){e.preventDefault()}
-    
-    li.appendChild(tag);
-   
+    li.setAttribute("class", "tagMin list-inline-item");
+    li.appendChild(div);
+    document.getElementById(card_id).firstElementChild.firstElementChild.appendChild(li);
+}
+
+function addTag(button){
+
+    var colorTag = getColorFromId(button.id);
     let cardID = JSON.parse(sessionStorage.getItem("card")).id;
     var cardTag = {
         "card_id": cardID,
@@ -837,18 +1128,28 @@ function addTag(button){
         "token" : token,
     }
 
-    console.log(JSON.stringify(cardTag))
-
     var url = "https://tads-trello.herokuapp.com/api/trello/cards/addtag"
 
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            tagList.insertBefore(li, document.getElementById("firstChildTag"));
-            button.disabled  =  true;
-           
-        } else if (this.readyState == 4 && this.status == 400) {
 
+    xhttp.onreadystatechange = function () {
+
+        if (this.readyState == 4 && this.status == 200) {
+            appendTag(button.id, colorTag);
+            addTagOnCard(cardID, colorTag);
+        } else if (this.readyState == 4 && this.status == 400) {
+            document.getElementById("cardModal").click();
+
+            //mostra o alert de erro por 4 segundos
+            document.getElementById("tagAlreadyIncluded").classList.add("show");
+            document.getElementById("tagAlreadyIncluded").classList.remove("tagAlreadyIncluded");
+            document.getElementById("tagAlreadyIncluded").classList.add("tagAlreadyIncludedAf");
+
+            setTimeout(function(){
+                document.getElementById("tagAlreadyIncluded").classList.remove("show");
+                document.getElementById("tagAlreadyIncluded").classList.remove("tagAlreadyIncludedAf");
+                document.getElementById("tagAlreadyIncluded").classList.add("tagAlreadyIncluded");
+            }, 4000)
         }
     }
 

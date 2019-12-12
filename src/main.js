@@ -34,6 +34,7 @@ getBoards();
             var obj = JSON.parse(this.responseText);
             console.log(obj.name);
             acountButton.innerHTML = obj.name.charAt(0);
+            document.getElementById("completeUserName").innerText = `(${obj.name})`
             
         }
     }
@@ -92,7 +93,7 @@ class Board {
         /*Método que inicia um novo objeto do tipo Board */
         //Hierarquia: li-> divCard -> Span -> paragrafo -> texto
         let listItem = document.createElement("li"); 
-        listItem.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 ");
+        listItem.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 ml-2 p-0");
         listItem.setAttribute("id", this.id);
 
         let divCard = document.createElement("div");
@@ -192,4 +193,9 @@ function closeBoardRegister(){
 
 function showAlert(someElement){
     document.getElementById(someElement).style.display ="block";
+}
+
+function logout(){
+    sessionStorage.clear();
+    return window.location.href = "index.html";
 }

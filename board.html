@@ -24,70 +24,162 @@
             <h1 class="ff_market">Trellozo</h1>
         </div>
         <div lass="nav-item">
-            <button class=" btn-circle p-0">
-                <span class="spnRoundedButton"></span>
-            </button>
+
+            <div class="btn-group dropleft">
+                <button class=" btn-circle p-0 " data-toggle="dropdown" type="button" id="dropdownMenuButton"
+                    aria-haspopup="true" aria-expanded="false">
+                    <span class="spnRoundedButton"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item text-center" id="completeUserName" href="#"></a>
+                    <a class="dropdown-item text-center border-top" onclick="logout()" href="#">Sair</a>
+                </div>
+            </div>
         </div>
+
     </nav>
-
-
-    <div class="d-flex justify-content-between mb-3">
-        <div class="pl-1 ">
-            <input size="1" autocomplete="off" onkeydown="renameBoard(event, this)" maxlength="15" class=" ml-4 font-weight-bold mt-2 btn-sup success"
-                id="boardName" />
-        </div>
-        <div class="d-none d-sm-block">
-            <div class="d-inline-flex">
-                <!-- <input type="button"  class="btn-sup mt-2" value="Alterar cor"> -->
-                <div class="btn-group">
-                    <button type="button" class="btn-sup dropdown-toggle mt-2 mx-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Alterar cor
-                    </button>
-                    <ul class="dropdown-menu list-inline px-3">
-                        <div class="d-flex justify-content-center">Escolha uma cor</div>
-                        <div class="dropdown-divider"></div>
-                        <li class="list-inline-item m-1">
-                            <button style="background-color: #845EC2;" class="btn-color"></button>
-                        </li>
-                        <li class="list-inline-item m-1">
-                            <button style="background-color: #D65DB1;" class="btn-color"></button>
-                        </li>
-                        <li class="list-inline-item m-1">
-                            <button style="background-color: #FF6F91;" class="btn-color"></button>
-                        </li>
-                        <li class="list-inline-item m-1">
-                            <button style="background-color: #FFC75F;" class="btn-color"></button>
-                        </li>
-                        <li class="list-inline-item m-1">
-                            <button style="background-color: #0081CF;" class="btn-color"></button>
-                        </li>
-                        <li class="list-inline-item m-1">
-                            <button style="background-color: #00DBAD;" class="btn-color"></button>
-                        </li>
-                        <li class="list-inline-item m-1">
-                            <button style="background-color: #2F4858;" class="btn-color"></button>
-                        </li>
-                        <li class="list-inline-item m-1">
-                            <button style="background-color: #739C11;" class="btn-color"></button>
-                        </li>
-                        <li class="list-inline-item m-1">
-                            <button style="background-color: #0D949E;" class="btn-color"></button>
-                        </li>
-                    </ul>
-                </div>
-
-                <input type="button" class="btn-sup mt-2 mr-1" value="Excluir board" data-toggle="modal" data-target="#modalExcluir" />
-                <div class="d-xs-none">
-                    <button class="mt-2 mr-1 spnDelete" ondragover="allowDrop(event)" ondrop="deleteCard(event)">
-                        <img src="img/delete.png" alt="">
-                    </button>
-                </div>
+    <!--Alert que é disparado se o usuário tentar adicionar uma tag já presente no card-->
+    <div class="row justify-content-center mw-100">
+        <div class="col-8 col-sm-6 col-md-6 col-lg-2 col-xl-2mb-3 p-0 ">
+            <div id="tagAlreadyIncluded" class="alert alert-warning fade tagAlreadyIncluded" role="alert">
+                <strong>Opa!</strong> Essa tag já está adicionada a seu card.
             </div>
         </div>
     </div>
 
+    <div class="container-fluid m-0 mw-100 p-0">
+        <div class="d-flex justify-content-between mb-3">
+            <div class="pl-1 ">
+                <input size="1" autocomplete="off" onkeydown="renameBoard(event, this)" maxlength="15"
+                    class=" ml-4 font-weight-bold mt-2 btn-sup success " id="boardName" />
+            </div>
+
+            <div class="d-none d-sm-block">
+                <div class="d-inline-flex">
+                    <!-- <input type="button"  class="btn-sup mt-2" value="Alterar cor"> -->
+                    <div class="btn-group">
+                        <button type="button" class="btn-sup dropdown-toggle mt-2 mx-1" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Alterar cor
+                        </button>
+                        <ul class="dropdown-menu list-inline px-3">
+                            <div class="d-flex justify-content-center">Escolha uma cor</div>
+                            <div class="dropdown-divider"></div>
+                            <li class="list-inline-item m-1">
+                                <button style="background-color: #845EC2;" class="btn-color"></button>
+                            </li>
+                            <li class="list-inline-item m-1">
+                                <button style="background-color: #D65DB1;" class="btn-color"></button>
+                            </li>
+                            <li class="list-inline-item m-1">
+                                <button style="background-color: #FF6F91;" class="btn-color"></button>
+                            </li>
+                            <li class="list-inline-item m-1">
+                                <button style="background-color: #FFC75F;" class="btn-color"></button>
+                            </li>
+                            <li class="list-inline-item m-1">
+                                <button style="background-color: #0081CF;" class="btn-color"></button>
+                            </li>
+                            <li class="list-inline-item m-1">
+                                <button style="background-color: #00DBAD;" class="btn-color"></button>
+                            </li>
+                            <li class="list-inline-item m-1">
+                                <button style="background-color: #2F4858;" class="btn-color"></button>
+                            </li>
+                            <li class="list-inline-item m-1">
+                                <button style="background-color: #739C11;" class="btn-color"></button>
+                            </li>
+                            <li class="list-inline-item m-1">
+                                <button style="background-color: #0D949E;" class="btn-color"></button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <input type="button" class="btn-sup mt-2 mr-1" value="Excluir board" data-toggle="modal"
+                        data-target="#modalExcluir" />
+                    <div class="d-xs-none">
+                        <button class="mt-2 mr-1 spnDelete" ondragover="allowDrop(event)" ondrop="deleteCard(event)">
+                            <img src="img/delete.png" alt="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!--Alternativa dos botões de configuração dos boards para telas pequenas-->
+            <div class="d-block d-sm-none">
+                <nav class="navbar navbar-light">
+                    <button class="btn-sup" data-toggle="modal" data-target="#modalSmallScreen">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </nav>
+                <div class="modal fade modal-sm" id="modalSmallScreen" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Configurações</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body d-inline-flex justify-content-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn-sup bg-secondary dropdown-toggle mt-2 mx-1"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Alterar cor
+                                    </button>
+                                    <ul class="dropdown-menu list-inline px-3">
+                                        <div class="d-flex justify-content-center">Escolha uma cor</div>
+                                        <div class="dropdown-divider"></div>
+                                        <li class="list-inline-item m-1">
+                                            <button style="background-color: #845EC2;" class="btn-color"></button>
+                                        </li>
+                                        <li class="list-inline-item m-1">
+                                            <button style="background-color: #D65DB1;" class="btn-color"></button>
+                                        </li>
+                                        <li class="list-inline-item m-1">
+                                            <button style="background-color: #FF6F91;" class="btn-color"></button>
+                                        </li>
+                                        <li class="list-inline-item m-1">
+                                            <button style="background-color: #FFC75F;" class="btn-color"></button>
+                                        </li>
+                                        <li class="list-inline-item m-1">
+                                            <button style="background-color: #0081CF;" class="btn-color"></button>
+                                        </li>
+                                        <li class="list-inline-item m-1">
+                                            <button style="background-color: #00DBAD;" class="btn-color"></button>
+                                        </li>
+                                        <li class="list-inline-item m-1">
+                                            <button style="background-color: #2F4858;" class="btn-color"></button>
+                                        </li>
+                                        <li class="list-inline-item m-1">
+                                            <button style="background-color: #739C11;" class="btn-color"></button>
+                                        </li>
+                                        <li class="list-inline-item m-1">
+                                            <button style="background-color: #0D949E;" class="btn-color"></button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <input type="button" class="btn-sup bg-secondary mt-2 mr-1" value="Excluir board"
+                                    data-toggle="modal" data-target="#modalExcluir" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
     <!--Modal usado para chamar a a exclusão do board-->
-    <div class="modal fade " id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade " id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog " role="document">
             <div class="modal-content defaultBgcolor">
                 <div class="modal-header">
@@ -108,7 +200,8 @@
     </div>
 
     <!--Modal usado para chamar a exclusão das listas-->
-    <div class="modal fade " id="modalExcluirLista" tabindex="-1" role="dialog" aria-labelledby="excluirLista" aria-hidden="true">
+    <div class="modal fade " id="modalExcluirLista" tabindex="-1" role="dialog" aria-labelledby="excluirLista"
+        aria-hidden="true">
         <div class="modal-dialog " role="document">
             <div class="modal-content defaultBgcolor">
                 <div class="modal-header">
@@ -133,15 +226,17 @@
     <div class="container-fluid mh-100" id="mainDiv">
         <ul class="row list-group-horizontal px-2 w-100 m-0" id="fatherRow">
             <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 ">
-                <div id="newList" class="card m-0" data-toggle="collapse" href="#formList" role="button" aria-expanded="false">
+                <div id="newList" class="card m-0" data-toggle="collapse" href="#formList" role="button"
+                    aria-expanded="false">
                     <span id="spnList" onclick="closeAlert(this)">
                         <p>Nova lista</p>
                     </span>
                     <div class="collapse" id="formList" onclick="event.stopPropagation()">
                         <form action="" method="post" id="formCreateList">
-                            <input autofocus type="text" class="form-control" id="listName" placeholder="Nome da lista" required maxlength="30">
+                            <input autofocus type="text" class="form-control" id="listName" placeholder="Nome da lista"
+                                required maxlength="30">
                             <div class="d-flex justify-content-start">
-                                <input type="submit" class="btn btn-success m-1" value="Criar">
+                                <input type="submit" class="btn btn-success my-1 mr-1 " value="Criar">
                                 <button type="button" class="close" onclick="resetForm()">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -154,40 +249,39 @@
     </div>
 
     <!-- Modal que é aberto quando o card é clicado -->
-    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <textarea class="modal-title inputNameCard font-weight-bold success" id="exampleModalLabel"></textarea>
+                    <textarea class="modal-title inputNameCard font-weight-bold success"
+                        id="exampleModalLabel"></textarea>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="">
-                    <div class="modal-body">
-                        <div class="my-2">
-                            <h5 class="font-weight-bold">Comment list</h5>
-                            <ul id="commentList" class="list-group list-group-flush"></ul>
-                        </div>
-                        <div class="input-group mb-2 mr-sm-2">
-                            <textarea type="text" class="form-control descriptionCard" id="inlineFormInputGroupUsername2" placeholder="Comment"></textarea>
-                        </div>
+                <div class="modal-body">
+                    <div class="my-2">
+                        <h5 class="font-weight-bold">Comentários</h5>
+                        <ul id="commentList" class="list-group list-group-flush"></ul>
+                    </div>
+                    <div class="input-group mb-2 mr-sm-2">
+                        <textarea type="text" class="form-control descriptionCard" id="inlineFormInputGroupUsername2"
+                            placeholder="Comment"></textarea>
+                    </div>
 
+                    <form action="" id="changesOnCardForm">
                         <div class="mt-1">
-                            <label>Change for the list</label>
-                            <select name="" id="" class="form-control">
-                                <option value="">1</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4</option>
-                                <option value="">5</option>
-                                <option value="">6</option>
+                            <label>Mudar card para a lista:</label>
+                            <select name="" id="selectionChange" class="form-control">
+                                <option value="default"></option>
                             </select>
                         </div>
 
                         <div class="mt-1">
-                            <label>Change date of board</label>
-                            <input type="date" class="form-control" />
+                            <label>Mudar data do card</label>
+                            <input max="2100-01-01" onchange="dateChanged()" id="dateCard" type="date"
+                                class="form-control" />
                         </div>
                         <div class="mt-1">
                             <label>Tags</label>
@@ -195,7 +289,8 @@
 
                                 <li id="firstChildTag">
                                     <div class="dropdown dropright">
-                                        <button class="btn border " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button class="btn border " type="button" id="dropdownMenu2"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             +
                                         </button>
                                         <table class="dropdown-menu p-0" aria-labelledby="dropdownMenu2">
@@ -222,11 +317,12 @@
 
                         </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExclude" data-dismiss="modal">Excluir card</button>
-                        <button type="submit" class="btn btn-secondary">Salvar mudanças</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExclude"
+                        data-dismiss="modal">Excluir card</button>
+                    <button type="submit" class="btn btn-secondary">Salvar mudanças</button>
+                </div>
                 </form>
             </div>
         </div>
@@ -234,7 +330,8 @@
 
 
     <!--Modal que dispara quando o usuário tenta excluir um card-->
-    <div class="modal fade" id="modalExclude" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalExclude" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -248,7 +345,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary">Não</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Sim</button>
+                    <button type="button" onclick="deleteCardFromModal()" class="btn btn-danger"
+                        data-dismiss="modal">Sim</button>
                 </div>
             </div>
         </div>
@@ -256,13 +354,18 @@
 
 
 
+
     <script src="src/board.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+
 
 </body>
 

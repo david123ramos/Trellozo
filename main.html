@@ -23,25 +23,33 @@
                 <h1 class="ff_market">Trellozo</h1>
             </div>
             <div lass="nav-item">
-                <button class=" btn-circle p-0">
-                    <span class="spnRoundedButton"></span>
-                </button>
+                <div class="btn-group dropleft">
+                    <button class=" btn-circle p-0 " data-toggle="dropdown" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                        <span class="spnRoundedButton"></span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item text-center" id="completeUserName" href="#"></a>
+                        <a class="dropdown-item text-center border-top" onclick="logout()" href="#">Sair</a>
+                    </div>
+                </div>
             </div>
         </nav>
 
     <!--Linha principal da tela inicial. Aqui ficam todos os boards do usuario oganizados
         em uma lista-->
         <!--TODO: as divs dos boards criados não podem ter o mesmo id: "newBoard"-->
-    <div class="container-fluid mh-100" id="mainDiv">
-        <ul class="row list-group list-group-horizontal px-3 w-100 m-0" id="fatherRow">
-            <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3">
-                <div id="newBoard" class="card border-light h-100 " onclick="return showAlert('divRegisterBoard')">
-                    <span id="spnNovoBoard" class="d-flex justify-content-center mt-3">
-                        <p>Novo quadro +</p>
-                    </span>
-                </div>
-            </li>
-        </ul> 
+    <div class="container mt-2">
+        <div class="container-fluid mh-100" id="mainDiv">
+            <ul class="row list-group list-group-horizontal px-3 w-100 m-0" id="fatherRow">
+                <li id="firstChild" class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 ml-2 p-0">
+                    <div id="newBoard" class="card border-light h-100 " onclick="return showAlert('divRegisterBoard')">
+                        <span id="spnNovoBoard" class="d-flex justify-content-center mt-3">
+                            <p>Novo quadro +</p>
+                        </span>
+                    </div>
+                </li>
+            </ul> 
+        </div>
     </div>
 
     <!--Form criar novo board-->

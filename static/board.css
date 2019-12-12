@@ -24,7 +24,7 @@ ul{
     font-family: Arial, Helvetica, sans-serif;
     border-radius: 3px;
     padding: 5px;
-    color: white;
+    color: white !important;
     font-weight: bold ;
     border: none;
 }
@@ -35,7 +35,7 @@ ul{
 #homeIconDiv{
     border-radius: 5px;
     background-color:rgba(255, 255, 255, 0.5);
-    padding: 0.3rem;
+    padding: 0.1rem;
 }
 
 #homeIconDiv:hover{
@@ -223,3 +223,22 @@ input::-webkit-input-placeholder{
     width: 2rem;
     height: 2rem;
 }
+
+
+/*Classe das tags que ficam em cima do card*/
+.tagMin{
+    width: 20%;
+    border: none !important;
+}
+
+/*O alert precisa ter essas características para não prejudicar a visão mobile*/
+.tagAlreadyIncluded{
+    position: absolute;
+    z-index: -1;
+}
+
+.tagAlreadyIncludedAf{
+    position: absolute;
+    z-index: 1000;
+}
+
