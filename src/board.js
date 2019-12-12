@@ -1138,6 +1138,7 @@ function addTag(button){
             appendTag(button.id, colorTag);
             addTagOnCard(cardID, colorTag);
         } else if (this.readyState == 4 && this.status == 400) {
+            console.clear();
             document.getElementById("cardModal").click();
 
             //mostra o alert de erro por 4 segundos
