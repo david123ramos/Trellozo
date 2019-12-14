@@ -32,7 +32,7 @@ function swapDiv(div){
 /*Aqui defininimos o eventListner que escutará os submits do form de cadastro */
 formCadastrar.addEventListener("submit", function (e) {
     e.preventDefault();
-    if(document.getElementById("name").value.trim() != "" &&  document.getElementById("password").value.trim() != ""){
+    if(document.getElementById("name").value.trim() != "" && document.getElementById("username").value.trim() != "" && document.getElementById("password").value.trim() != ""){
         let dados = {
             "name": document.getElementById("name").value,
             "username": document.getElementById("username").value,
@@ -72,39 +72,44 @@ formCadastrar.addEventListener("submit", function (e) {
 /*Aqui defininimos o eventListner que escutará os submits do form de Login*/
 formLogin.addEventListener("submit", function (e) {
     e.preventDefault();
-
-    let dados = {
-        "username": document.getElementById("nameLogin").value,
-        "password": document.getElementById("passwordLogin").value
-    }
-
-    var url = "https://tads-trello.herokuapp.com/api/trello/login";
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var obj = JSON.parse(this.responseText);
-            console.log(obj.token);
-            
-           if (keepConnected.checked){
-               localStorage.setItem("token", JSON.stringify(obj.token));
-               sessionStorage.setItem("token", JSON.stringify(obj.token));
-            }else{
-                sessionStorage.setItem("token", obj.token);
-            }
-            formLogin.reset();
-            formLogin.submit();
-
-        }else if(this.readyState == 4 && this.status == 400){
-            divFailLogin.style.display = "block";
-            formLogin.reset();
+    if(document.getElementById("nameLogin").value.trim() != "" && document.getElementById("passwordLogin").value.trim() != ""){
+        let dados = {
+            "username": document.getElementById("nameLogin").value,
+            "password": document.getElementById("passwordLogin").value
         }
+    
+        var url = "https://tads-trello.herokuapp.com/api/trello/login";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var obj = JSON.parse(this.responseText);
+                console.log(obj.token);
+                
+               if (keepConnected.checked){
+                   localStorage.setItem("token", JSON.stringify(obj.token));
+                   sessionStorage.setItem("token", JSON.stringify(obj.token));
+                }else{
+                    sessionStorage.setItem("token", obj.token);
+                }
+                formLogin.reset();
+                formLogin.submit();
+    
+            }else if(this.readyState == 4 && this.status == 400){
+                divFailLogin.style.display = "block";
+                formLogin.reset();
+            }
+        }
+    
+        console.log(JSON.stringify(dados));
+    
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(dados));
+    }else{
+        document.getElementById("nameLogin").value = "";
+        document.getElementById("passwordLogin").value = "";
+
     }
-
-    console.log(JSON.stringify(dados));
-
-    xhttp.open("POST", url, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(dados));
 
 });
 

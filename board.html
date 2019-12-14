@@ -49,7 +49,7 @@
 
     <div class="container-fluid m-0 mw-100 p-0">
         <div class="d-flex justify-content-between mb-3">
-            <div class="pl-1 ">
+            <div class="pl-1 "data-tip="This is the text of the tooltip2">
                 <input size="1" autocomplete="off" onkeydown="renameBoard(event, this)" maxlength="15"
                     class=" ml-4 font-weight-bold mt-2 btn-sup success " id="boardName" />
             </div>
@@ -261,7 +261,7 @@
                     </div>
                     <div class="input-group mb-2 mr-sm-2">
                         <textarea type="text" class="form-control descriptionCard" id="inlineFormInputGroupUsername2"
-                            placeholder="Comment"></textarea>
+                            placeholder="Pressione Enter para enviar o comentário"></textarea>
                     </div>
 
                     <form action="" id="changesOnCardForm">
@@ -304,13 +304,9 @@
                                             </tr>
                                         </table>
                                     </div>
-
                                 </li>
-
                             </ul>
-
                         </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExclude"

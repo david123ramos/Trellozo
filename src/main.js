@@ -97,10 +97,8 @@ class Board {
         listItem.setAttribute("id", this.id);
 
         let divCard = document.createElement("div");
-        divCard.setAttribute("class", "card border-light h-100 board");
-        divCard.setAttribute("id", "newBoard");
-
-        
+        divCard.setAttribute("class", "card border-light h-100 board newBoard");
+                
         let spn = document.createElement("span");
         
         let paragrafo = document.createElement("p");

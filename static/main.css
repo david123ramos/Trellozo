@@ -17,16 +17,17 @@ h1{
 #nav-header{
     background-color: #026aa7;
 }
-#newBoard{
+.newBoard{
     margin-top: 1rem;
     border-radius: 5px;
     padding-left: 5px;
     font-weight: bold;
     height: 90px !important;
 }
-#newBoard:hover{
+.newBoard:hover{
     cursor: pointer;
 }
+
 
 #homeImg{
     width: 2rem;
