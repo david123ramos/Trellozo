@@ -32,33 +32,39 @@ function swapDiv(div){
 /*Aqui defininimos o eventListner que escutará os submits do form de cadastro */
 formCadastrar.addEventListener("submit", function (e) {
     e.preventDefault();
-
-    let dados = {
-        "name": document.getElementById("name").value,
-        "username": document.getElementById("username").value,
-        "password": document.getElementById("password").value
-    }
-
-    var url = "https://tads-trello.herokuapp.com/api/trello/users/new";
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var obj = JSON.parse(this.responseText);
-            console.log(obj);
-            divSuccess.style.display = "block";
-            divC.style.display = "none";
-            divL.style.display = "block";
-        }else if(this.readyState == 4 && this.status == 400){
-            divWrong.style.display="block";
-            formCadastrar.reset();
+    if(document.getElementById("name").value.trim() != "" &&  document.getElementById("password").value.trim() != ""){
+        let dados = {
+            "name": document.getElementById("name").value,
+            "username": document.getElementById("username").value,
+            "password": document.getElementById("password").value
         }
+    
+        var url = "https://tads-trello.herokuapp.com/api/trello/users/new";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var obj = JSON.parse(this.responseText);
+                console.log(obj);
+                divSuccess.style.display = "block";
+                divC.style.display = "none";
+                divL.style.display = "block";
+            }else if(this.readyState == 4 && this.status == 400){
+                divWrong.style.display="block";
+                formCadastrar.reset();
+            }
+        }
+    
+        console.log(JSON.stringify(dados));
+    
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(dados));
+    }else{
+        document.getElementById("name").value = ""
+        document.getElementById("username").value = ""
+        document.getElementById("password").value = ""
+
     }
-
-    console.log(JSON.stringify(dados));
-
-    xhttp.open("POST", url, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(dados));
 
 });
 
