@@ -139,36 +139,39 @@ class Board {
 
 formCreateBoard.addEventListener("submit", function(e){
     e.preventDefault();
-    
-    var board ={
-        "name" : boardName.value,
-        "color": colorButton.value,
-        "token": token
-    }
-
-    var url = "https://tads-trello.herokuapp.com/api/trello/boards/new";
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var obj = JSON.parse(this.responseText);
-            console.log(obj);
-            let newBoard = new Board(obj.name, obj.color, obj.id);
-            console.log(newBoard)
-            fatherRow.insertBefore(newBoard.init(), firstChild);
-            
-            //limpa o form
-            closeBoardRegister();
-            closeAlert(divRegisterBoard);
-
-        }else if(this.readyState == 4 && this.status == 400){
-
+    if(boardName.value.trim() != ""){
+        var board ={
+            "name" : boardName.value.trim(),
+            "color": colorButton.value,
+            "token": token
         }
+    
+        var url = "https://tads-trello.herokuapp.com/api/trello/boards/new";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var obj = JSON.parse(this.responseText);
+                console.log(obj);
+                let newBoard = new Board(obj.name, obj.color, obj.id);
+                console.log(newBoard)
+                fatherRow.insertBefore(newBoard.init(), firstChild);
+                
+                //limpa o form
+                closeBoardRegister();
+                closeAlert(divRegisterBoard);
+    
+            }else if(this.readyState == 4 && this.status == 400){
+    
+            }
+        }
+    
+    
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(board));
+    }else{
+        boardName.value = "";
     }
-
-
-    xhttp.open("POST", url, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(board));
 
 });
 

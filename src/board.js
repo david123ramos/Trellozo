@@ -3,7 +3,7 @@ const boardID = JSON.parse(sessionStorage.getItem("board")).id;
 const boardColor = JSON.parse(sessionStorage.getItem("board")).color;
 const boardName = JSON.parse(sessionStorage.getItem("board")).name;
 const token = sessionStorage.getItem("token");
-const data = dataAtualFormatada();
+const data = dateNow();
 var title = document.getElementById("cardModal").getElementsByTagName("textarea")[0];
 var activeKeydown = false;
 //flag que indica se a data do card foi alterada
@@ -58,42 +58,44 @@ window.onload = function () {
 
 formCreateList.addEventListener("submit", function (e) {
     e.preventDefault();
-
-    var board = {
-        "name": listName.value,
-        "token": token,
-        "board_id": boardID
-    }
-    var url = "https://tads-trello.herokuapp.com/api/trello/lists/new";
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var obj = JSON.parse(this.responseText);
-            //apendando a nova lista ao sessionStorage
-            let arrList = JSON.parse(sessionStorage.getItem("lists"))
-            arrList.push(obj);
-            sessionStorage.setItem("lists", JSON.stringify(arrList));
-
-            let newList = new List(obj.name, obj.id);
-            fatherRow.insertBefore(newList.init(), firstChild);
-
-            //limpa o form
-            resetForm();
-
-        } else if (this.readyState == 4 && this.status == 400) {
-
+    if(listName.value.trim() != ""){
+        var board = {
+            "name": listName.value,
+            "token": token,
+            "board_id": boardID
         }
+        var url = "https://tads-trello.herokuapp.com/api/trello/lists/new";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var obj = JSON.parse(this.responseText);
+                //apendando a nova lista ao sessionStorage
+                let arrList = JSON.parse(sessionStorage.getItem("lists"))
+                arrList.push(obj);
+                sessionStorage.setItem("lists", JSON.stringify(arrList));
+    
+                let newList = new List(obj.name, obj.id);
+                fatherRow.insertBefore(newList.init(), firstChild);
+    
+                //limpa o form
+                resetForm();
+    
+            } else if (this.readyState == 4 && this.status == 400) {
+    
+            }
+        }
+    
+    
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(board));
+    }else{
+        listName.value="";
     }
-
-
-    xhttp.open("POST", url, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(board));
 
 });
 
 //.collapse('toggle') alterna a vizualizção da classe collapse que está em uma div
-//TODO : não usar jQuery
 function resetForm() {
     formCreateList.reset();
     $('#formList').collapse('toggle')
@@ -164,7 +166,7 @@ function logout(){
 
 function createCard(nameCard, listId) {
     var card = {
-        "name": nameCard,
+        "name": nameCard.trim(),
         "data": data,
         "token": token,
         "list_id": listId
@@ -191,7 +193,7 @@ function createCard(nameCard, listId) {
 
 }
 
-function dataAtualFormatada() {
+function dateNow() {
     var data = new Date(),
         dia = data.getDate().toString(),
         diaF = (dia.length == 1) ? '0' + dia : dia,
@@ -204,11 +206,11 @@ function dataAtualFormatada() {
 //função usada para renomear limitar a quantidade de caracteres que o usuário pode colocar na renomeação do board
 function renameBoard(e, input) {
 
-    if (e.keyCode == 13 && input.value != "") {
+    if (e.keyCode == 13 && input.value.trim() != "") {
 
         let board = {
             "board_id": boardID,
-            "name": input.value,
+            "name": input.value.trim(),
             "token": token
         }
 
@@ -217,10 +219,10 @@ function renameBoard(e, input) {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 let b = JSON.parse(sessionStorage.getItem("board"));
-                b.name = input.value;
+                b.name = input.value.trim();
                 input.classList.replace("success", "success-af");
 
-                document.getElementsByTagName("title")[0].innerHTML = input.value + " | Trellozo";
+                document.getElementsByTagName("title")[0].innerHTML = input.value.trim() + " | Trellozo";
                 sessionStorage.setItem("board", JSON.stringify(b));
 
             } else if (this.readyState == 4 && this.status == 400) {
@@ -237,7 +239,7 @@ function renameBoard(e, input) {
             input.blur();
         }, 1000)
 
-    } else if (input.value == "") {
+    } else if (input.value.trim() == "") {
         input.classList.replace("success", "error-af");
         setTimeout(function () {
             input.classList.replace("error-af", "success");
@@ -246,11 +248,11 @@ function renameBoard(e, input) {
 }
 
 function renameList(event, input, listId) {
-    if (event.keyCode == 13 && input.value != "") {
+    if (event.keyCode == 13 && input.value.trim() != "") {
 
         let list = {
             "list_id": listId,
-            "name": input.value,
+            "name": input.value.trim(),
             "token": token
         }
 
@@ -281,6 +283,7 @@ function renameList(event, input, listId) {
 
         setTimeout(function () {
             input.classList.replace("success-af", "success");
+            input.value.trim();
             input.blur();
         }, 1000)
 
@@ -293,14 +296,14 @@ function renameList(event, input, listId) {
 }
 function renameCard(event, input) {
 
-    if (event.keyCode == 13 && input.value != "") {
+    if (event.keyCode == 13 && input.value.trim() != "") {
         event.preventDefault();
         var cardClicked = JSON.parse(sessionStorage.getItem("card"));
 
         let card = {
             "token": token,
             "card_id": cardClicked.id,
-            "name": input.value
+            "name": input.value.trim()
         }
 
         var url = "https://tads-trello.herokuapp.com/api/trello/cards/rename"
@@ -542,11 +545,11 @@ function openCard() {
 
     title.removeEventListener("keydown", function () { activeKeydown = false; });
 
-    title.style.width = card.name.length + "rem";
+    title.style.width = (card.name.length * 2)+ "rem";
     title.value = card.name;
 
     document.getElementById("cardModal").getElementsByTagName("textarea")[1].onkeydown = function (event) {
-        if (event.keyCode == 13 && this.value != "") {
+        if (event.keyCode == 13 && this.value.trim() != "") {
            addComment(this, this.value, card.id)
         } else if (event.keyCode == 13) {
             event.preventDefault();

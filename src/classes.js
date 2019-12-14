@@ -54,7 +54,7 @@ class List {
             //form -> textArea -> divWrapper -> botaoAdd -> botaoClose
             let form = new formCard().init();
             form.getElementsByTagName("textarea")[0].addEventListener("keypress", function (event) {
-                if (event.keyCode == 13 && this.value != "") {
+                if (event.keyCode == 13 && this.value.trim() != "") {
                     createCard(this.value, ul.id);
                     form.reset();
                     this.blur();
