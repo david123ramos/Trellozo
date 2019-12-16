@@ -5,6 +5,8 @@ const boardName = JSON.parse(sessionStorage.getItem("board")).name;
 const token = sessionStorage.getItem("token");
 const data = dateNow();
 var title = document.getElementById("cardModal").getElementsByTagName("textarea")[0];
+var userName;
+//flag que indica se o event listener da textarea do nome do card já foi adicionado
 var activeKeydown = false;
 //flag que indica se a data do card foi alterada
 var dateChange = false;
@@ -16,7 +18,6 @@ var acountButton = document.getElementsByClassName("spnRoundedButton").item(0);
 
 //Forms e divs
 var formCreateList = document.getElementById("formCreateList");
-var divCreateList = document.getElementById("formList");
 var spnListTitle = document.getElementById("spnList");
 var listName = document.getElementById("listName");
 
@@ -25,7 +26,7 @@ document.getElementById("nav-header").style.backgroundColor = boardColor;
 document.getElementsByTagName("body")[0].style.backgroundColor = boardColor;
 var boardNameInput = document.getElementById("boardName");
 boardNameInput.value = boardName;
-boardNameInput.style.width = boardName.length + "rem"
+boardNameInput.style.width = boardName.length >= 10 ? (boardName.length/2) :  (boardName.length * 1.2)  + "rem"
 document.getElementsByTagName("title")[0].innerHTML = boardName + " | Trellozo";
 getUserName();
 getLists();
@@ -60,7 +61,7 @@ formCreateList.addEventListener("submit", function (e) {
     e.preventDefault();
     if(listName.value.trim() != ""){
         var board = {
-            "name": listName.value,
+            "name": listName.value.trim(),
             "token": token,
             "board_id": boardID
         }
@@ -84,7 +85,6 @@ formCreateList.addEventListener("submit", function (e) {
     
             }
         }
-    
     
         xhttp.open("POST", url, true);
         xhttp.setRequestHeader("Content-type", "application/json");
@@ -134,7 +134,7 @@ function getUserName() {
             var obj = JSON.parse(this.responseText);
             acountButton.innerHTML = obj.name.charAt(0);
             document.getElementById("completeUserName").innerText = `(${obj.name})`
-
+            userName = obj.name;
         }
     }
     xhttp.open("GET", url, true);
@@ -165,32 +165,31 @@ function logout(){
 }
 
 function createCard(nameCard, listId) {
-    var card = {
-        "name": nameCard.trim(),
-        "data": data,
-        "token": token,
-        "list_id": listId
-    }
-    var url = "https://tads-trello.herokuapp.com/api/trello/cards/new";
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var obj = JSON.parse(this.responseText);
-            let card = new Card(obj.name, obj.id, obj.data).init();
-            let l = document.getElementById(listId);
-            //precisamos diferenciar os li's. Os li's que possuem id são os que queremos
-            let sizeList = l.querySelectorAll("li[id]").length
-            l.insertBefore(card, l.childNodes[sizeList]);
-
-        } else if (this.readyState == 4 && this.status == 400) {
-
+        var card = {
+            "name": nameCard.trim(),
+            "data": data,
+            "token": token,
+            "list_id": listId
         }
-    }
-
-    xhttp.open("POST", url, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(card));
-
+        var url = "https://tads-trello.herokuapp.com/api/trello/cards/new";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var obj = JSON.parse(this.responseText);
+                let card = new Card(obj.name, obj.id, obj.data).init();
+                let l = document.getElementById(listId);
+                //precisamos diferenciar os li's. Os li's que possuem id são os que queremos
+                let sizeList = l.querySelectorAll("li[id]").length
+                l.insertBefore(card, l.childNodes[sizeList]);
+    
+            } else if (this.readyState == 4 && this.status == 400) {
+    
+            }
+        }
+    
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(card));
 }
 
 function dateNow() {
@@ -375,6 +374,7 @@ function getCards(listId) {
             var obj = JSON.parse(this.responseText);
             let l = document.getElementById(listId);
             for (let i in obj) {
+                getCardCommentsLength(obj[i].id);
                 l.appendChild(new Card(obj[i].name, obj[i].id, obj[i].data).init());
                 cardTags(obj[i].id, addTagOnCard);
             }
@@ -440,15 +440,12 @@ function excludeList() {
                     index = arrList.indexOf(i);
                 }
             });
-
+            //remove 1 elemento na posição index
             arrList.splice(index, 1);
             //setando o novo array ao sessionStorage
             sessionStorage.setItem("lists", JSON.stringify(arrList));
-
             //remove o id da ultima lista que foi clicada para a exclusão
             sessionStorage.removeItem("list")
-
-
 
         } else if (this.readyState == 4 && this.status == 400) {
 
@@ -465,10 +462,10 @@ function allowDrop(e) {
     e.preventDefault();
     if (e.target.getAttribute("draggable") == "true")
         e.dataTransfer.dropEffect = "none";
-
 }
 
 function drag(e) {
+    //lixeira que aparece no canto da tela para excluir o card mais rapida
     document.getElementsByClassName("spnDelete")[0].classList.replace("spnDelete", "spnDelete-ev");
     e.dataTransfer.setData("fatherElement", e.target.parentNode.id);
     e.dataTransfer.setData("element", e.target.id);
@@ -483,16 +480,16 @@ function drop(e) {
     dragged.classList.remove("drag");
     dragged.getElementsByClassName("textCardSubmited")[0].classList.remove("noShadow");
 
-    if (e.target.tagName == 'UL') {
+    /*é importante checar se o elemento que estou dropando é uma Lista e se ela tem id
+    (para evitar bugs com a lista de tagsdentro dos cards) */
+    if (e.target.tagName == 'UL' && e.target.id) {
         try {
             e.target.appendChild(dragged);
             changeCard(dragged.id, e.target.id);
         } catch (err) {
             console.log("Algo deu errado");
         }
-
     }
-
 }
 
 //Função que é chamada antes de um card ser aberto
@@ -501,8 +498,6 @@ function clearModalCard(){
     //remove os comentários
     var ul = document.getElementById("commentList")
     ul.innerHTML = "";
-
-
     //remove tags
     var tags = document.getElementById("tags");
     var childTag = tags.firstElementChild;
@@ -527,7 +522,6 @@ function clearModalCard(){
             break;
         }
     }
-
 }
 
 //Função que é chamada quando o card é clicado
@@ -555,7 +549,6 @@ function openCard() {
             event.preventDefault();
         }
     }
-
 } 
 
 //appenda o comentário no modal
@@ -564,6 +557,16 @@ function appendComment(comment){
     let li = document.createElement("li");
     li.setAttribute("class", "list-group-item")
     let div = document.createElement("div");
+    
+    //um clone do botão que indica quel usuário comento (cópia da funcionalidade do trello)
+    let div2 = acountButton.cloneNode(true);
+    div2.classList.add("mr-3");
+    div2.setAttribute("data-toggle", "tooltip");
+    div2.setAttribute("data-placement", "top");
+    div2.setAttribute("title", userName);
+    div2.setAttribute("tabindex", "0");
+
+    div.appendChild(div2);
     div.appendChild(document.createTextNode(comment));
     li.appendChild(div);
     document.getElementById("commentList").appendChild(li);
@@ -578,11 +581,8 @@ function appendTag(id, colorTag){
     li.setAttribute("class", "m-1")
     li.setAttribute("id", id);
     
-    
     let tag = document.createElement("button");
-
     tag.setAttribute("class", "tag w-100 h-100 "+colorTag);
-   
     tag.onclick = function(e){e.preventDefault()}
     
     li.appendChild(tag);
@@ -591,7 +591,6 @@ function appendTag(id, colorTag){
 
 function addComment(textarea, comment, card_id){
     
-    appendComment(comment);   
     textarea.value = '';
     textarea.blur();
 
@@ -606,7 +605,11 @@ function addComment(textarea, comment, card_id){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-         
+            let card_changed = document.getElementById(card_id).querySelector("i");
+            let nComment = Number(card_changed.innerText);
+            nComment += 1;
+            card_changed.innerText = nComment;
+            appendComment(comment);
         } else if (this.readyState == 4 && this.status == 400) {
 
         }
@@ -616,6 +619,26 @@ function addComment(textarea, comment, card_id){
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(comment4Send));
 }
+
+//retorna o numero de comentários dos cards para serem usados na construção dos mesmos
+function getCardCommentsLength(card_id){
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/"+token+"/"+card_id+"/comments"
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          
+          document.getElementById(card_id).querySelector("i").innerText = (JSON.parse(this.responseText)).length;
+
+        } else if (this.readyState == 4 && this.status == 400) {
+        }
+    }
+
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(url));
+}
+
+
 
 //recupera os comentários de um card
 function cardComments (card_id) {
@@ -683,8 +706,6 @@ function getListsFromSession(card_clicked){
             selectionTag.appendChild(opt);
         }
     });
-
-
 }
 
 //função usada para recuperar todas as informações de um card quando o mesmo é aberto
@@ -692,8 +713,12 @@ function getCardInfo(card_id){
     cardComments(card_id);
     cardTags(card_id, appendTag);
     getListsFromSession(document.getElementById(card_id));
+
+    //captura a data do card que foi salva no DOM 
     var date  = document.getElementById(card_id).querySelector('div[date]').getAttribute("date");
-    var dateInput =  document.querySelector('input[type="date"]')
+    var dateInput =  document.querySelector('input[type="date"]');
+
+    //padroniza a data para ser aceita no dateInput 'yyyy-mm-dd'
     date = date.split("/").reverse().join().replace(/,/g, '-');
     dateInput.value = date;
 }
@@ -749,8 +774,6 @@ function deleteCard(e) {
     xhttp.open("DELETE", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(card));
-
-
 }
 
 //função que altera a flag que indica que a data foi mudada
@@ -832,7 +855,6 @@ function changeCard(card_id, list_id) {
 //retorna  a cor normalizada bootstrap dada o id da tag
 function getColorFromId(button_id){
     var colorTag;
-
     if(button_id == 2){
         colorTag = "btn bg-primary";
     }else if(button_id == 12){
@@ -845,7 +867,7 @@ function getColorFromId(button_id){
     return colorTag;
 }
 
-//adiciona as tags nos cards
+//adiciona as tags nos cards (elipses coloridas nos cards)
 function addTagOnCard(card_id, color){
     let div = document.createElement("div");
     div.setAttribute("class", "card border-0 "+color);
@@ -880,8 +902,8 @@ function addTag(button){
 
             //mostra o alert de erro por 4 segundos
             document.getElementById("tagAlreadyIncluded").classList.add("show");
-            document.getElementById("tagAlreadyIncluded").classList.remove("tagAlreadyIncluded");
             document.getElementById("tagAlreadyIncluded").classList.add("tagAlreadyIncludedAf");
+            document.getElementById("tagAlreadyIncluded").classList.remove("tagAlreadyIncluded");
 
             setTimeout(function(){
                 document.getElementById("tagAlreadyIncluded").classList.remove("show");

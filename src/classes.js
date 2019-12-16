@@ -10,7 +10,7 @@ class List {
     init() {
         //Hierarquia: li->div->ul->li->div->span->->textNode
         let li = document.createElement("li");
-        li.setAttribute("class", "col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 p-0 mr-2 ml-0");
+        li.setAttribute("class", "col-12 col-sm-3 col-md-5 col-lg-2 col-xl-2 mb-3 p-0 mr-2 ml-0");
 
 
 
@@ -52,6 +52,9 @@ class List {
 
 
             //form -> textArea -> divWrapper -> botaoAdd -> botaoClose
+            /**o form pode ser submetido de duas maneiras: quando a tecla enter é pressionada
+             * ou quando o form é submetido pelo botão.
+             */
             let form = new formCard().init();
             form.getElementsByTagName("textarea")[0].addEventListener("keypress", function (event) {
                 if (event.keyCode == 13 && this.value.trim() != "") {
@@ -60,15 +63,19 @@ class List {
                     this.blur();
                 } else if (event.keyCode == 13) {
                     event.preventDefault();
+                    if(this.value.trim() == "")
+                        this.value ="";
                 }
             })
 
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
-                if (this.getElementsByTagName("textarea")[0].value != "") {
+                if (this.getElementsByTagName("textarea")[0].value.trim() != "") {
                     createCard(this.getElementsByTagName("textarea")[0].value, ul.id);
                     this.reset();
                     this.getElementsByTagName("textarea")[0].focus();
+                }else{
+                    this.reset();
                 }
             });
 
@@ -90,7 +97,7 @@ class List {
         //nome da lista
         let text = new NameList(this.name, this.listId).init();
 
-        //icone "..." que aparece quando se coloca o mouse em cima da lista
+        //icone "X" que aparece quando se coloca o mouse em cima da lista
         let buttonDelete = document.createElement("button");
         let iconDots = document.createElement("img");
         buttonDelete.setAttribute("class", "more-after btn p-0");
@@ -128,6 +135,7 @@ class NameList {
     }
     init() {
         let text = document.createElement("input");
+        text.setAttribute("max", 15);
         text.setAttribute("maxlength", 15);
         text.setAttribute("autocomplete", "off");
         text.setAttribute("autocorrect", "off");
@@ -167,17 +175,30 @@ class Card {
 
         let ulTag = document.createElement("ul");
         ulTag.setAttribute("class","list-inline");
+
         div.appendChild(ulTag);
         
         let spnNome = document.createElement("span");
         spnNome.innerText = this.cardName;
         div.appendChild(spnNome);
+
+        let sp = document.createElement("span");
+        sp.setAttribute("class", "fa fa-comments-o");
+        let i = document.createElement("i");
+        i.setAttribute("class", "ml-2");
+        sp.appendChild(i);
+        div.appendChild(sp);
+
+
         let liCard = document.createElement("li");
         liCard.setAttribute("id", this.cardId);
 
         liCard.setAttribute("data-toggle", "modal");
         liCard.setAttribute("data-target", "#cardModal");
-
+        /**Quando o card é clicado é aberto um modal. Para usarmos as informações necessárias
+         * sem precisar de fazer diversas requisições ao servidor, podemos guardar o que é pertinetente
+         * no session storage.
+         */
         liCard.onclick = () => {
             var name = document.getElementById(this.cardId).firstElementChild.querySelector("span").innerText;
             let cardInfo = {
@@ -244,16 +265,13 @@ class AddButton {
 
 class CloseButton {
     init() {
-
         let close = document.createElement("button");
         close.setAttribute("type", "button");
         close.classList.add("close");
 
-
         let spn = document.createElement("span");
         spn.appendChild(document.createTextNode("x"));
         close.appendChild(spn);
-
 
         return close;
     }
