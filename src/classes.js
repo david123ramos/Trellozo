@@ -184,6 +184,7 @@ class Card {
 
         let sp = document.createElement("span");
         sp.setAttribute("class", "fa fa-comments-o");
+        sp.setAttribute("title", "comentários")
         let i = document.createElement("i");
         i.setAttribute("class", "ml-2");
         sp.appendChild(i);

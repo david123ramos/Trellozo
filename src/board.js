@@ -181,7 +181,7 @@ function createCard(nameCard, listId) {
                 //precisamos diferenciar os li's. Os li's que possuem id são os que queremos
                 let sizeList = l.querySelectorAll("li[id]").length
                 l.insertBefore(card, l.childNodes[sizeList]);
-    
+                getCardCommentsLength(obj.id);
             } else if (this.readyState == 4 && this.status == 400) {
     
             }
